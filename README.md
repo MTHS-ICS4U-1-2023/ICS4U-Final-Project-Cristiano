@@ -2,4 +2,4 @@
 
 Phaser 3 game in TypeScript
 
-Site link: https://cristianosellitto.github.io/ICS4U-Final-Project-Cristiano/
+Site link: <https://cristianosellitto.github.io/ICS4U-Final-Project-Cristiano/>
