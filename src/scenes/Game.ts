@@ -1,35 +1,91 @@
-import { Scene } from 'phaser';
+import { Scene } from 'phaser'
+import Player from '../classes/Player'
+import Box from '../classes/Box'
 
-export class Game extends Scene
-{
-    camera: Phaser.Cameras.Scene2D.Camera;
-    background: Phaser.GameObjects.Image;
-    msg_text : Phaser.GameObjects.Text;
+export class Game extends Scene {
+  camera: Phaser.Cameras.Scene2D.Camera
+  background: Phaser.GameObjects.TileSprite
+  player: Player
+  box: Box
+  boxCollision: Phaser.Physics.Arcade.StaticBody
+  currentLevel: number
 
-    constructor ()
-    {
-        super('Game');
+  constructor() {
+    super('Game')
+    console.log('Game Scene')
+  }
+
+  init(data: any) {
+    this.currentLevel = data.level
+    console.log(`Current level: ${this.currentLevel}`)
+  }
+
+  create() {
+    this.camera = this.cameras.main
+
+    // Create background
+    this.background = this.add.tileSprite(0, 0, 1920, 1080, 'gameBg')
+    this.background.setOrigin(0, 0)
+
+    // Create player
+    this.player = this.physics.add.existing(new Player(this, 0, 0))
+
+    // Create box
+    this.box = this.physics.add.existing(new Box(this, 1, 0))
+
+    // Create colliders
+    this.physics.add.collider(this.player, this.box.collision)
+  }
+
+  update(time: number, delta: number): void {
+    // Movement
+    const keyUpArrow = this.input.keyboard.addKey("UP")
+    const keyDownArrow = this.input.keyboard.addKey("DOWN")
+    const keyLeftArrow = this.input.keyboard.addKey("LEFT")
+    const keyRightArrow = this.input.keyboard.addKey("RIGHT")
+    const keyW = this.input.keyboard.addKey("W")
+    const keyS = this.input.keyboard.addKey("S")
+    const keyA = this.input.keyboard.addKey("A")
+    const keyD = this.input.keyboard.addKey("D")
+
+    if (keyUpArrow.isDown && keyRightArrow.isDown || keyW.isDown && keyD.isDown) {
+      this.player.move('upRight')
+    } else if (keyUpArrow.isDown && keyLeftArrow.isDown || keyW.isDown && keyA.isDown) {
+      this.player.move('upLeft')
+    } else if (keyDownArrow.isDown && keyRightArrow.isDown || keyS.isDown && keyD.isDown) {
+      this.player.move('downRight')
+    } else if (keyDownArrow.isDown && keyLeftArrow.isDown || keyS.isDown && keyA.isDown) {
+      this.player.move('downLeft')
+    } else if (keyUpArrow.isDown || keyW.isDown) {
+      this.player.move('up')
+    } else if (keyDownArrow.isDown || keyS.isDown) {
+      this.player.move('down')
+    } else if (keyLeftArrow.isDown || keyA.isDown) {
+      this.player.move('left')
+    } else if (keyRightArrow.isDown || keyD.isDown) {
+      this.player.move('right')
+    } else {
+      this.player.move('')
     }
 
-    create ()
-    {
-        this.camera = this.cameras.main;
-        this.camera.setBackgroundColor(0x00ff00);
+    // Screen boundaries
+    const PLAYER_MIDDLE = 125 / 2
+    const UP_BOUND_Y: number = PLAYER_MIDDLE
+    const DOWN_BOUND_Y: number = 1080 - PLAYER_MIDDLE
+    const LEFT_BOUND_X: number = UP_BOUND_Y
+    const RIGHT_BOUND_X: number = 1920 - PLAYER_MIDDLE
 
-        this.background = this.add.image(512, 384, 'background');
-        this.background.setAlpha(0.5);
-
-        this.msg_text = this.add.text(512, 384, 'Make something fun!\nand share it with us:\nsupport@phaser.io', {
-            fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
-            stroke: '#000000', strokeThickness: 8,
-            align: 'center'
-        });
-        this.msg_text.setOrigin(0.5);
-
-        this.input.once('pointerdown', () => {
-
-            this.scene.start('GameOver');
-
-        });
+    if (this.player.y < UP_BOUND_Y) {
+      this.player.y = UP_BOUND_Y
     }
+    if (this.player.y > DOWN_BOUND_Y) {
+      this.player.y = DOWN_BOUND_Y
+    }
+    if (this.player.x < LEFT_BOUND_X) {
+      this.player.x = LEFT_BOUND_X
+    }
+    if (this.player.x > RIGHT_BOUND_X) {
+      this.player.x = RIGHT_BOUND_X
+    }
+  }
 }
