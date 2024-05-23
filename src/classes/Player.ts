@@ -8,42 +8,41 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   /**
-   * Moves the player in a direction bounded by screen borders.
+   * Moves the player in a direction.
+   * Stops moving the player is an invalid move key is set.
    *
    * @param moveKey the key that says what direction the player will move in
    */
   move(moveKey: string) {
-    const PLAYER_SPEED = 10
-    const PLAYER_MIDDLE = 125 / 2
-    const UP_BOUND_Y: number = PLAYER_MIDDLE
-    const DOWN_BOUND_Y: number = 1080 - PLAYER_MIDDLE
-    const LEFT_BOUND_X: number = UP_BOUND_Y
-    const RIGHT_BOUND_X: number = 1920 - PLAYER_MIDDLE
+    const PLAYER_SPEED = 5 * 100
 
     switch (moveKey) {
       case 'up':
-        this.y -= PLAYER_SPEED
-        if (this.y < UP_BOUND_Y) {
-          this.y = UP_BOUND_Y
-        }
+        this.setVelocity(0, -PLAYER_SPEED)
         break
       case 'down':
-        this.y += PLAYER_SPEED
-        if (this.y > DOWN_BOUND_Y) {
-          this.y = DOWN_BOUND_Y
-        }
+        this.setVelocity(0, PLAYER_SPEED)
         break
       case 'left':
-        this.x -= PLAYER_SPEED
-        if (this.x < LEFT_BOUND_X) {
-          this.x = LEFT_BOUND_X
-        }
+        this.setVelocity(-PLAYER_SPEED, 0)
         break
       case 'right':
-        this.x += PLAYER_SPEED
-        if (this.x > RIGHT_BOUND_X) {
-          this.x = RIGHT_BOUND_X
-        }
+        this.setVelocity(PLAYER_SPEED, 0)
+        break
+      case 'upRight':
+        this.setVelocity(PLAYER_SPEED, -PLAYER_SPEED)
+        break
+      case 'upLeft':
+        this.setVelocity(-PLAYER_SPEED, -PLAYER_SPEED)
+        break
+      case 'downRight':
+        this.setVelocity(PLAYER_SPEED, PLAYER_SPEED)
+        break
+      case 'downLeft':
+        this.setVelocity(-PLAYER_SPEED, PLAYER_SPEED)
+        break
+      default:
+        this.setVelocity(0, 0)
         break
     }
   }

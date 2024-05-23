@@ -1,13 +1,13 @@
 import { Scene } from 'phaser'
 import Player from '../classes/Player'
-//import Box from '../classes/Box'
+import Box from '../classes/Box'
 
 export class Game extends Scene {
   camera: Phaser.Cameras.Scene2D.Camera
   background: Phaser.GameObjects.TileSprite
-  map: Phaser.Tilemaps.Tilemap
   player: Player
   box: Box
+  boxCollision: Phaser.Physics.Arcade.StaticBody
   currentLevel: number
 
   constructor() {
@@ -30,11 +30,11 @@ export class Game extends Scene {
     // Create player
     this.player = this.physics.add.existing(new Player(this, 0, 0))
 
-    // Create boxes
-    /*
-    this.map = this.add.tilemap('level')
-    var tileset = this.map.addTilesetImage('box', 'gameBoxes')
-    */
+    // Create box
+    this.box = this.physics.add.existing(new Box(this, 1, 0))
+
+    // Create colliders
+    this.physics.add.collider(this.player, this.box.collision)
   }
 
   update(time: number, delta: number): void {
@@ -48,20 +48,44 @@ export class Game extends Scene {
     const keyA = this.input.keyboard.addKey("A")
     const keyD = this.input.keyboard.addKey("D")
 
-    if (keyUpArrow.isDown || keyW.isDown === true) {
+    if (keyUpArrow.isDown && keyRightArrow.isDown || keyW.isDown && keyD.isDown) {
+      this.player.move('upRight')
+    } else if (keyUpArrow.isDown && keyLeftArrow.isDown || keyW.isDown && keyA.isDown) {
+      this.player.move('upLeft')
+    } else if (keyDownArrow.isDown && keyRightArrow.isDown || keyS.isDown && keyD.isDown) {
+      this.player.move('downRight')
+    } else if (keyDownArrow.isDown && keyLeftArrow.isDown || keyS.isDown && keyA.isDown) {
+      this.player.move('downLeft')
+    } else if (keyUpArrow.isDown || keyW.isDown) {
       this.player.move('up')
-    }
-
-    if (keyDownArrow.isDown || keyS.isDown === true) {
+    } else if (keyDownArrow.isDown || keyS.isDown) {
       this.player.move('down')
-    }
-
-    if (keyLeftArrow.isDown || keyA.isDown === true) {
+    } else if (keyLeftArrow.isDown || keyA.isDown) {
       this.player.move('left')
+    } else if (keyRightArrow.isDown || keyD.isDown) {
+      this.player.move('right')
+    } else {
+      this.player.move('')
     }
 
-    if (keyRightArrow.isDown || keyD.isDown === true) {
-      this.player.move('right')
+    // Screen boundaries
+    const PLAYER_MIDDLE = 125 / 2
+    const UP_BOUND_Y: number = PLAYER_MIDDLE
+    const DOWN_BOUND_Y: number = 1080 - PLAYER_MIDDLE
+    const LEFT_BOUND_X: number = UP_BOUND_Y
+    const RIGHT_BOUND_X: number = 1920 - PLAYER_MIDDLE
+
+    if (this.player.y < UP_BOUND_Y) {
+      this.player.y = UP_BOUND_Y
+    }
+    if (this.player.y > DOWN_BOUND_Y) {
+      this.player.y = DOWN_BOUND_Y
+    }
+    if (this.player.x < LEFT_BOUND_X) {
+      this.player.x = LEFT_BOUND_X
+    }
+    if (this.player.x > RIGHT_BOUND_X) {
+      this.player.x = RIGHT_BOUND_X
     }
   }
 }
