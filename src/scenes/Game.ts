@@ -1,10 +1,12 @@
 import { Scene } from 'phaser'
+import LoadLevel from '../classes/LoadLevel'
 import Player from '../classes/Player'
 import Box from '../classes/Box'
 
 export class Game extends Scene {
   camera: Phaser.Cameras.Scene2D.Camera
   background: Phaser.GameObjects.TileSprite
+  levelLoader: LoadLevel
   player: Player
   box: Box
   boxCollision: Phaser.Physics.Arcade.StaticBody
@@ -24,17 +26,19 @@ export class Game extends Scene {
     this.camera = this.cameras.main
 
     // Create background
-    this.background = this.add.tileSprite(0, 0, 1920, 1080, 'gameBg')
+    this.background = this.add.tileSprite(0, 0, 1800, 1000, 'gameBg')
     this.background.setOrigin(0, 0)
 
     // Create player
     this.player = this.physics.add.existing(new Player(this, 0, 0))
 
     // Create box
-    this.box = this.physics.add.existing(new Box(this, 1, 0))
+    this.levelLoader = new LoadLevel(this, this.currentLevel, this.player)
 
-    // Create colliders
-    this.physics.add.collider(this.player, this.box.collision)
+    /*
+    this.box = this.physics.add.existing(new Box(this, 1, 0, this.player))
+    this.physics.add.existing(new Box(this, 2, 0, this.player))
+    */
   }
 
   update(time: number, delta: number): void {
@@ -71,9 +75,9 @@ export class Game extends Scene {
     // Screen boundaries
     const PLAYER_MIDDLE = 125 / 2
     const UP_BOUND_Y: number = PLAYER_MIDDLE
-    const DOWN_BOUND_Y: number = 1080 - PLAYER_MIDDLE
+    const DOWN_BOUND_Y: number = 1000 - PLAYER_MIDDLE
     const LEFT_BOUND_X: number = UP_BOUND_Y
-    const RIGHT_BOUND_X: number = 1920 - PLAYER_MIDDLE
+    const RIGHT_BOUND_X: number = 1800 - PLAYER_MIDDLE
 
     if (this.player.y < UP_BOUND_Y) {
       this.player.y = UP_BOUND_Y

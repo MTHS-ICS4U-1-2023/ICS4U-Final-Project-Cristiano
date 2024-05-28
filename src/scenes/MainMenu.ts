@@ -23,10 +23,10 @@ export class MainMenu extends Scene {
 
   create() {
     // Create title images
-    this.background = this.add.tileSprite(0, 0, 1920, 1080, 'titleBg')
+    this.background = this.add.tileSprite(0, 0, 1800, 1000, 'titleBg')
     this.background.setOrigin(0, 0)
-    this.logo = this.add.image(1920 / 2, 300, 'logo').setScale(0.5)
-    this.title = this.add.text(1920 / 2, 1080 / 2, 'Click to play!', this.textStyle).setOrigin(0.5)
+    this.logo = this.add.image(1800 / 2, 300, 'logo').setScale(0.5)
+    this.title = this.add.text(1800 / 2, 1000 / 2, 'Click to play!', this.textStyle).setOrigin(0.5)
     this.input.once('pointerdown',() => {
       this.scene.start('Game', {
         level: 1

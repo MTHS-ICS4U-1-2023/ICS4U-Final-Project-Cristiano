@@ -6,6 +6,7 @@ import typescript from '@rollup/plugin-typescript';
 import copy from 'rollup-plugin-copy';
 import url from '@rollup/plugin-url';
 import glslify from 'rollup-plugin-glslify';
+import json from '@rollup/plugin-json';
 
 // Production
 import terser from '@rollup/plugin-terser';
@@ -39,6 +40,7 @@ export default {
             extensions: ['ts', 'tsx'],
         }),
         typescript(),
+        json(),
         commonjs({
             include: [
                 'node_modules/eventemitter3/**',

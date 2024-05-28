@@ -10,6 +10,7 @@ import { fileURLToPath } from 'node:url';
 import copy from 'rollup-plugin-copy';
 import alias from '@rollup/plugin-alias'
 import path from 'path';
+import json from '@rollup/plugin-json';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 
@@ -28,6 +29,7 @@ export default {
             emitFiles: true
         }),
         typescript(),
+        json(),
         alias({
             entries: [
                 { 
