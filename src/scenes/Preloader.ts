@@ -37,6 +37,13 @@ export class Preloader extends Scene {
     // Other images
     this.load.image('logo', 'images/logo.png')
     this.load.image('box', 'images/box.png')
+    this.load.image('lavaBox', 'images/lavaBox.png')
+    this.load.image('moveBox', 'images/moveBox.png')
+    this.load.image('steelBox', 'images/steelBox.png')
+    this.load.image('ice', 'images/ice.png')
+    this.load.image('goal', 'images/goal.png')
+    this.load.image('powerUp', 'images/powerUp.png')
+    this.load.image('powerUpCover', 'images/powerUpCover.png')
     this.load.image('playerImg', 'images/player.png')
   }
 

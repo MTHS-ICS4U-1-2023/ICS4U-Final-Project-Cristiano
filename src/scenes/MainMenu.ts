@@ -29,7 +29,7 @@ export class MainMenu extends Scene {
     this.title = this.add.text(1800 / 2, 1000 / 2, 'Click to play!', this.textStyle).setOrigin(0.5)
     this.input.once('pointerdown',() => {
       this.scene.start('Game', {
-        level: 1
+        level: 0
       })
     })
   }
