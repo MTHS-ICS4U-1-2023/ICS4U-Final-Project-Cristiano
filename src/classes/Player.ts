@@ -1,9 +1,19 @@
 export default class Player extends Phaser.Physics.Arcade.Sprite {
   currentScene: Phaser.Scene
+  powerUpHat: Phaser.GameObjects.Image
 
   constructor(scene: Phaser.Scene, playerX: number, playerY: number) {
-    super(scene, 100 + playerX * 200, 100 + playerY * 200, 'playerImg')
+    // Player X and Y values
+    playerX = 100 + playerX * 200
+    playerY = 100 + playerY * 200
+    // Create player
+    super(scene, playerX, playerY, 'playerImg')
     this.setScale(0.25)
+    this.setDepth(1)
+    // Create power up hat
+    this.powerUpHat = scene.physics.add.sprite(playerX, playerY, 'powerUpCover').setVisible(false)
+    this.powerUpHat.setScale(0.2)
+    this.powerUpHat.setDepth(2)
     scene.add.existing(this)
   }
 

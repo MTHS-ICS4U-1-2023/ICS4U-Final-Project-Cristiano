@@ -32,16 +32,15 @@ export class Game extends Scene {
     // Create player
     this.player = this.physics.add.existing(new Player(this, 0, 0))
 
-    // Create box
+    // Load current level
     this.levelLoader = new LoadLevel(this, this.currentLevel, this.player)
-
-    /*
-    this.box = this.physics.add.existing(new Box(this, 1, 0, this.player))
-    this.physics.add.existing(new Box(this, 2, 0, this.player))
-    */
   }
 
   update(time: number, delta: number): void {
+    // Update player power up hat
+    this.player.powerUpHat.x = this.player.x
+    this.player.powerUpHat.y = this.player.y
+
     // Movement
     const keyUpArrow = this.input.keyboard.addKey("UP")
     const keyDownArrow = this.input.keyboard.addKey("DOWN")
@@ -70,26 +69,6 @@ export class Game extends Scene {
       this.player.move('right')
     } else {
       this.player.move('')
-    }
-
-    // Screen boundaries
-    const PLAYER_MIDDLE = 125 / 2
-    const UP_BOUND_Y: number = PLAYER_MIDDLE
-    const DOWN_BOUND_Y: number = 1000 - PLAYER_MIDDLE
-    const LEFT_BOUND_X: number = UP_BOUND_Y
-    const RIGHT_BOUND_X: number = 1800 - PLAYER_MIDDLE
-
-    if (this.player.y < UP_BOUND_Y) {
-      this.player.y = UP_BOUND_Y
-    }
-    if (this.player.y > DOWN_BOUND_Y) {
-      this.player.y = DOWN_BOUND_Y
-    }
-    if (this.player.x < LEFT_BOUND_X) {
-      this.player.x = LEFT_BOUND_X
-    }
-    if (this.player.x > RIGHT_BOUND_X) {
-      this.player.x = RIGHT_BOUND_X
     }
   }
 }
