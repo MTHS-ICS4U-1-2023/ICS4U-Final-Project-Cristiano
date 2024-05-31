@@ -26,10 +26,14 @@ export class MainMenu extends Scene {
     this.background = this.add.tileSprite(0, 0, 1800, 1000, 'titleBg')
     this.background.setOrigin(0, 0)
     this.logo = this.add.image(1800 / 2, 300, 'logo').setScale(0.5)
-    this.title = this.add.text(1800 / 2, 1000 / 2, 'Click to play!', this.textStyle).setOrigin(0.5)
-    this.input.once('pointerdown',() => {
+    this.title = this.add.text(1800 / 2, 1000 / 2, 'Click here to play!', this.textStyle).setOrigin(0.5)
+    this.title.setInteractive(
+      new Phaser.Geom.Rectangle(0, 0, this.title.width, this.title.height),
+      Phaser.Geom.Rectangle.Contains
+    )
+    this.title.on('pointerdown', () => {
       this.scene.start('Game', {
-        level: 0
+        level: 1
       })
     })
   }

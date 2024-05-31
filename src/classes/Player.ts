@@ -1,6 +1,12 @@
+/**
+ * Creates a player
+ */
 export default class Player extends Phaser.Physics.Arcade.Sprite {
-  currentScene: Phaser.Scene
-  powerUpHat: Phaser.GameObjects.Image
+  public powerUpHat: Phaser.GameObjects.Image
+  public redKeysHeld: number
+  public blueKeysHeld: number
+  public greenKeysHeld: number
+  private currentScene: Phaser.Scene
 
   constructor(scene: Phaser.Scene, playerX: number, playerY: number) {
     // Player X and Y values
@@ -8,13 +14,23 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     playerY = 100 + playerY * 200
     // Create player
     super(scene, playerX, playerY, 'playerImg')
+    this.redKeysHeld = 0
+    this.blueKeysHeld = 0
+    this.greenKeysHeld = 0
     this.setScale(0.25)
-    this.setDepth(1)
-    // Create power up hat
-    this.powerUpHat = scene.physics.add.sprite(playerX, playerY, 'powerUpCover').setVisible(false)
-    this.powerUpHat.setScale(0.2)
-    this.powerUpHat.setDepth(2)
+    this.setDepth(2)
+    // Import scene
+    this.currentScene = scene
     scene.add.existing(this)
+  }
+
+  /**
+   * Creates the player's power up hat
+   */
+  public createPowerUpHat() {
+    this.powerUpHat = this.currentScene.physics.add.sprite(this.x, this.y, 'powerUpCover')
+    this.powerUpHat.setScale(0.2)
+    this.powerUpHat.setDepth(3)
   }
 
   /**
@@ -23,7 +39,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
    *
    * @param moveKey the key that says what direction the player will move in
    */
-  move(moveKey: string) {
+  public move(moveKey: string) {
     const PLAYER_SPEED = 5 * 100
 
     switch (moveKey) {

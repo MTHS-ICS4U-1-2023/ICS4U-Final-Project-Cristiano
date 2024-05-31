@@ -1,14 +1,14 @@
 import { Scene } from 'phaser'
 import LoadLevel from '../classes/LoadLevel'
 import Player from '../classes/Player'
-import Box from '../classes/Box'
+import LevelBanner from '../classes/LevelBanner'
 
 export class Game extends Scene {
   camera: Phaser.Cameras.Scene2D.Camera
   background: Phaser.GameObjects.TileSprite
   levelLoader: LoadLevel
   player: Player
-  box: Box
+  levelBanner: LevelBanner
   boxCollision: Phaser.Physics.Arcade.StaticBody
   currentLevel: number
 
@@ -34,12 +34,17 @@ export class Game extends Scene {
 
     // Load current level
     this.levelLoader = new LoadLevel(this, this.currentLevel, this.player)
+
+    // Create level banner
+    this.levelBanner = new LevelBanner(this, this.levelLoader.levelName)
   }
 
   update(time: number, delta: number): void {
     // Update player power up hat
-    this.player.powerUpHat.x = this.player.x
-    this.player.powerUpHat.y = this.player.y
+    if (this.player.powerUpHat != null) {
+      this.player.powerUpHat.x = this.player.x
+      this.player.powerUpHat.y = this.player.y
+    }
 
     // Movement
     const keyUpArrow = this.input.keyboard.addKey("UP")

@@ -1,7 +1,7 @@
+/**
+ * Creates a box that acts as a obstacle
+ */
 export default class Box extends Phaser.Physics.Arcade.Sprite {
-  currentScene: Phaser.Scene
-  collision: Phaser.Physics.Arcade.StaticBody
-
   constructor(scene: Phaser.Scene, gridX: number, gridY: number, moveBoxes: Phaser.GameObjects.Container) {
     // Create box
     const posX = 100 + gridX * 200

@@ -1,7 +1,7 @@
+/**
+ * Creates a power up that causes the player to move through normal boxes
+ */
 export default class PowerUp extends Phaser.Physics.Arcade.Sprite {
-  currentScene: Phaser.Scene
-  collision: Phaser.Physics.Arcade.StaticBody
-
   constructor(scene: Phaser.Scene, gridX: number, gridY: number) {
     // Create power up
     const posX = 100 + gridX * 200
