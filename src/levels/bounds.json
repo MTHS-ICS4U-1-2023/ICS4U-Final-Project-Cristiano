@@ -1,0 +1,32 @@
+{
+    "boundsDefault":[
+        ["steelBox", 0, -1],
+        ["steelBox", 1, -1],
+        ["steelBox", 2, -1],
+        ["steelBox", 3, -1],
+        ["steelBox", 4, -1],
+        ["steelBox", 5, -1],
+        ["steelBox", 6, -1],
+        ["steelBox", 7, -1],
+        ["steelBox", 8, -1],
+        ["steelBox", -1, 0],
+        ["steelBox", -1, 1],
+        ["steelBox", -1, 2],
+        ["steelBox", -1, 3],
+        ["steelBox", -1, 4],
+        ["steelBox", 0, 5],
+        ["steelBox", 1, 5],
+        ["steelBox", 2, 5],
+        ["steelBox", 3, 5],
+        ["steelBox", 4, 5],
+        ["steelBox", 5, 5],
+        ["steelBox", 6, 5],
+        ["steelBox", 7, 5],
+        ["steelBox", 8, 5],
+        ["steelBox", 9, 0],
+        ["steelBox", 9, 1],
+        ["steelBox", 9, 2],
+        ["steelBox", 9, 3],
+        ["steelBox", 9, 4]
+    ]
+}

@@ -40,10 +40,16 @@ export class Preloader extends Scene {
     this.load.image('lavaBox', 'images/lavaBox.png')
     this.load.image('moveBox', 'images/moveBox.png')
     this.load.image('steelBox', 'images/steelBox.png')
-    this.load.image('ice', 'images/ice.png')
     this.load.image('goal', 'images/goal.png')
     this.load.image('powerUp', 'images/powerUp.png')
     this.load.image('powerUpCover', 'images/powerUpCover.png')
+    this.load.image('redKeyDoor', 'images/redKeyDoor.png')
+    this.load.image('redKey', 'images/redKey.png')
+    this.load.image('blueKeyDoor', 'images/blueKeyDoor.png')
+    this.load.image('blueKey', 'images/blueKey.png')
+    this.load.image('greenKeyDoor', 'images/greenKeyDoor.png')
+    this.load.image('greenKey', 'images/greenKey.png')
+    this.load.image('levelBanner', 'images/levelBanner.png')
     this.load.image('playerImg', 'images/player.png')
   }
 
