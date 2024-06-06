@@ -32,6 +32,7 @@ export class Preloader extends Scene {
     // Background images
     this.load.image('titleBg', 'backgrounds/titleBackground.png')
     this.load.image('gameBg', 'backgrounds/gameBackground.png')
+    this.load.image('pauseBg', 'backgrounds/pauseBackground.png')
     this.load.image('gameBgSpecial', 'backgrounds/gameBackgroundSpecial.png')
 
     // Other images
@@ -51,6 +52,7 @@ export class Preloader extends Scene {
     this.load.image('greenKey', 'images/greenKey.png')
     this.load.image('levelBanner', 'images/levelBanner.png')
     this.load.image('playerImg', 'images/player.png')
+    this.load.image('playerTwoImg', 'images/playerTwo.png')
   }
 
   create() {
