@@ -4,22 +4,49 @@ import Player from '../classes/Player'
 import LevelBanner from '../classes/LevelBanner'
 
 export class Game extends Scene {
-  camera: Phaser.Cameras.Scene2D.Camera
-  background: Phaser.GameObjects.TileSprite
-  levelLoader: LoadLevel
-  player: Player
-  levelBanner: LevelBanner
-  boxCollision: Phaser.Physics.Arcade.StaticBody
-  currentLevel: number
+  private camera: Phaser.Cameras.Scene2D.Camera
+  private background: Phaser.GameObjects.TileSprite
+  private levelLoader: LoadLevel
+  private pauseBackground: Phaser.GameObjects.Image
+  private pauseTextStyle: Phaser.GameObjects.TextStyle
+  private pauseText: Phaser.GameObjects.Text
+  public player: Player
+  public playerTwo: Player | null
+  public levelBanner: LevelBanner
+  public boxCollision: Phaser.Physics.Arcade.StaticBody
+  public currentLevel: number
+  public players: number
 
   constructor() {
     super('Game')
+    // Create initial variables
+    this.playerTwo = null
+    this.pauseTextStyle = {
+      fontFamily: 'Arial Black',
+      fontSize: 60,
+      color: '#ffffff',
+      stroke: '#000000',
+      strokeThickness: 8,
+      align: 'left'
+    }
     console.log('Game Scene')
+  }
+
+  /**
+   * Disables or enables the pause menu.
+   *
+   * @param state true or false
+   */
+  showPauseMenu(state: boolean) {
+    this.pauseBackground.setVisible(state)
+    this.pauseText.setVisible(state)
   }
 
   init(data: any) {
     this.currentLevel = data.level
+    this.players = data.players
     console.log(`Current level: ${this.currentLevel}`)
+    console.log(`# of players: ${this.players}`)
   }
 
   create() {
@@ -30,50 +57,131 @@ export class Game extends Scene {
     this.background.setOrigin(0, 0)
 
     // Create player
-    this.player = this.physics.add.existing(new Player(this, 0, 0))
+    this.player = this.physics.add.existing(new Player(this, 0, 0, 1))
+
+    if (this.players == 2) {
+      this.playerTwo = this.physics.add.existing(new Player(this, 8, 0, 2))
+    }
 
     // Load current level
-    this.levelLoader = new LoadLevel(this, this.currentLevel, this.player)
+    this.levelLoader = new LoadLevel(this, this.currentLevel, this.player, this.playerTwo, this.players)
 
     // Create level banner
     this.levelBanner = new LevelBanner(this, this.levelLoader.levelName)
+
+    // Create pause menu
+    const pauseDepth = 10
+    this.pauseBackground = this.add.image(1800 / 2, 1000 / 2, 'pauseBg')
+      .setOrigin(0.5)
+      .setScale(0.75)
+      .setAlpha(0.5)
+      .setDepth(pauseDepth)
+      .setVisible(false)
+    this.pauseText = this.add.text(250, 150, 'Pause Menu', this.pauseTextStyle)
+      .setDepth(pauseDepth)
+      .setVisible(false)
   }
 
   update(time: number, delta: number): void {
-    // Update player power up hat
-    if (this.player.powerUpHat != null) {
-      this.player.powerUpHat.x = this.player.x
-      this.player.powerUpHat.y = this.player.y
+    // Key binds
+    const keyUpArrow = this.input.keyboard.addKey('UP')
+    const keyDownArrow = this.input.keyboard.addKey('DOWN')
+    const keyLeftArrow = this.input.keyboard.addKey('LEFT')
+    const keyRightArrow = this.input.keyboard.addKey('RIGHT')
+    const keyW = this.input.keyboard.addKey('W')
+    const keyS = this.input.keyboard.addKey('S')
+    const keyA = this.input.keyboard.addKey('A')
+    const keyD = this.input.keyboard.addKey('D')
+    const keyEsc = this.input.keyboard.addKey('ESC')
+    const keyEscDown = Phaser.Input.Keyboard.JustDown(keyEsc)
+
+    /**
+     * Disables or enables the movement keys.
+     *
+     * @param state true or false
+     */
+    function changeKeys(state: boolean) {
+      keyUpArrow.enabled = state
+      keyDownArrow.enabled = state
+      keyLeftArrow.enabled = state
+      keyRightArrow.enabled = state
+      keyW.enabled = state
+      keyS.enabled = state
+      keyA.enabled = state
+      keyD.enabled = state
     }
 
-    // Movement
-    const keyUpArrow = this.input.keyboard.addKey("UP")
-    const keyDownArrow = this.input.keyboard.addKey("DOWN")
-    const keyLeftArrow = this.input.keyboard.addKey("LEFT")
-    const keyRightArrow = this.input.keyboard.addKey("RIGHT")
-    const keyW = this.input.keyboard.addKey("W")
-    const keyS = this.input.keyboard.addKey("S")
-    const keyA = this.input.keyboard.addKey("A")
-    const keyD = this.input.keyboard.addKey("D")
+    if (keyEscDown) {
+      if (this.pauseBackground.visible == false) {
+        changeKeys(false)
+        this.showPauseMenu(true)
+      } else {
+        this.camera.setAlpha(1)
+        changeKeys(true)
+        this.showPauseMenu(false)
+      }
+    }
 
-    if (keyUpArrow.isDown && keyRightArrow.isDown || keyW.isDown && keyD.isDown) {
-      this.player.move('upRight')
-    } else if (keyUpArrow.isDown && keyLeftArrow.isDown || keyW.isDown && keyA.isDown) {
-      this.player.move('upLeft')
-    } else if (keyDownArrow.isDown && keyRightArrow.isDown || keyS.isDown && keyD.isDown) {
-      this.player.move('downRight')
-    } else if (keyDownArrow.isDown && keyLeftArrow.isDown || keyS.isDown && keyA.isDown) {
-      this.player.move('downLeft')
-    } else if (keyUpArrow.isDown || keyW.isDown) {
-      this.player.move('up')
-    } else if (keyDownArrow.isDown || keyS.isDown) {
-      this.player.move('down')
-    } else if (keyLeftArrow.isDown || keyA.isDown) {
-      this.player.move('left')
-    } else if (keyRightArrow.isDown || keyD.isDown) {
-      this.player.move('right')
-    } else {
-      this.player.move('')
+    // Check if player one exists
+    if (this.player.isDeleted == false) {
+      // Update player power up hat
+      if (this.player.powerUpHat != null) {
+        this.player.powerUpHat.x = this.player.x
+        this.player.powerUpHat.y = this.player.y
+      }
+
+      // Movement
+      if (keyW.isDown && keyD.isDown) {
+        this.player.move('upRight')
+      } else if (keyW.isDown && keyA.isDown) {
+        this.player.move('upLeft')
+      } else if (keyS.isDown && keyD.isDown) {
+        this.player.move('downRight')
+      } else if (keyS.isDown && keyA.isDown) {
+        this.player.move('downLeft')
+      } else if (keyW.isDown) {
+        this.player.move('up')
+      } else if (keyS.isDown) {
+        this.player.move('down')
+      } else if (keyA.isDown) {
+        this.player.move('left')
+      } else if (keyD.isDown) {
+        this.player.move('right')
+      } else {
+        this.player.move('')
+      }
+    }
+
+    // Check if player two exists
+    if (this.playerTwo) {
+      if (this.playerTwo.isDeleted == false) {
+        // Update player power up hat
+        if (this.playerTwo.powerUpHat != null) {
+          this.playerTwo.powerUpHat.x = this.playerTwo.x
+          this.playerTwo.powerUpHat.y = this.playerTwo.y
+        }
+  
+        // Movement
+        if (keyUpArrow.isDown && keyRightArrow.isDown) {
+          this.playerTwo.move('upRight')
+        } else if (keyUpArrow.isDown && keyLeftArrow.isDown) {
+          this.playerTwo.move('upLeft')
+        } else if (keyDownArrow.isDown && keyRightArrow.isDown) {
+          this.playerTwo.move('downRight')
+        } else if (keyDownArrow.isDown && keyLeftArrow.isDown) {
+          this.playerTwo.move('downLeft')
+        } else if (keyUpArrow.isDown) {
+          this.playerTwo.move('up')
+        } else if (keyDownArrow.isDown) {
+          this.playerTwo.move('down')
+        } else if (keyLeftArrow.isDown) {
+          this.playerTwo.move('left')
+        } else if (keyRightArrow.isDown) {
+          this.playerTwo.move('right')
+        } else {
+          this.playerTwo.move('')
+        }
+      }
     }
   }
 }

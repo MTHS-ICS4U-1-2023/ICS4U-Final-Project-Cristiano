@@ -32,6 +32,6 @@ export default class LevelBanner extends Phaser.Physics.Arcade.Image {
       },
       callbackScope: this
     })
-    scene.add.existing(this)5000
+    scene.add.existing(this)
   }
 }

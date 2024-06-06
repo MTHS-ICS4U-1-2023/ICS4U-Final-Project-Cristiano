@@ -11,6 +11,7 @@ export default class SteelBox extends Phaser.Physics.Arcade.Sprite {
     // Create move box collider
     scene.physics.add.collider(moveBoxes.getAll(), this, function(moveBoxCollide) {
       moveBoxCollide.setImmovable(true)
+      moveBoxCollide.setVelocity(0)
       moveBoxCollide.setTint(0x545454)
     })
     scene.add.existing(this)
