@@ -1,0 +1,19 @@
+<mxfile host="65bd71144e">
+    <diagram id="5MO7Q_laxDEsie4JfjtD" name="Page-1">
+        <mxGraphModel dx="715" dy="625" grid="1" gridSize="5" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="131" value="Player" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=29;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="20" width="270" height="135" as="geometry"/>
+                </mxCell>
+                <mxCell id="132" value="&lt;br&gt;- currentScene: Phaser.Scene&lt;br&gt;+ powerUpHat: Phaser.GameObjects.Image&lt;br&gt;+ redKeysHeld: number&lt;br&gt;+ blueKeysHeld: number&lt;br&gt;+ greenKeysHeld: number&lt;br&gt;+ isDeleted: boolean" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="131" vertex="1">
+                    <mxGeometry y="29" width="270" height="106" as="geometry"/>
+                </mxCell>
+                <mxCell id="137" value="+ createPowerUpHat()&lt;br&gt;+ move(moveKey: string)" style="rounded=0;whiteSpace=wrap;html=1;fontSize=12;fillColor=none;align=left;verticalAlign=top;" parent="1" vertex="1">
+                    <mxGeometry x="20" y="155" width="270" height="40" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
