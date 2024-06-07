@@ -3,7 +3,6 @@ import { Scene } from 'phaser'
 export class Preloader extends Scene {
   constructor() {
     super('Preloader')
-    console.log('Preloader Scene')
   }
 
   init() {

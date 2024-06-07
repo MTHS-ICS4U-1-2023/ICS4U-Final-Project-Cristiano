@@ -9,7 +9,11 @@ export class Game extends Scene {
   private levelLoader: LoadLevel
   private pauseBackground: Phaser.GameObjects.Image
   private pauseTextStyle: Phaser.GameObjects.TextStyle
+  private pauseContainer: Phaser.GameObjects.Container
+  private pauseButtonTextStyle: Phaser.GameObjects.TextStyle
   private pauseText: Phaser.GameObjects.Text
+  private restartButton: Phaser.GameObjects.Text
+  private goBackButton: Phaser.GameObjects.Text
   public player: Player
   public playerTwo: Player | null
   public levelBanner: LevelBanner
@@ -24,12 +28,19 @@ export class Game extends Scene {
     this.pauseTextStyle = {
       fontFamily: 'Arial Black',
       fontSize: 60,
+      color: '#000000',
+      stroke: '#ffffff',
+      strokeThickness: 8,
+      align: 'left'
+    }
+    this.pauseButtonTextStyle = {
+      fontFamily: 'Arial Black',
+      fontSize: 60,
       color: '#ffffff',
       stroke: '#000000',
       strokeThickness: 8,
       align: 'left'
     }
-    console.log('Game Scene')
   }
 
   /**
@@ -38,15 +49,17 @@ export class Game extends Scene {
    * @param state true or false
    */
   showPauseMenu(state: boolean) {
-    this.pauseBackground.setVisible(state)
-    this.pauseText.setVisible(state)
+    // Halt player movement
+    this.input.keyboard.resetKeys()
+    // Change pause GUI element visibility
+    for (let counter: number = 0; counter < this.pauseContainer.length; counter++) {
+      this.pauseContainer.getAt(counter).setVisible(state)
+    }
   }
 
   init(data: any) {
     this.currentLevel = data.level
     this.players = data.players
-    console.log(`Current level: ${this.currentLevel}`)
-    console.log(`# of players: ${this.players}`)
   }
 
   create() {
@@ -69,6 +82,21 @@ export class Game extends Scene {
     // Create level banner
     this.levelBanner = new LevelBanner(this, this.levelLoader.levelName)
 
+    // Create tutorial text
+    if (this.currentLevel == 1) {
+      let textX = 525
+      let textY = 200
+      let tutorialText: string = 'Movement:\nW\nA S D'
+      if (this.players == 2) {
+        textX = 210
+        tutorialText = 'Movement (Blue):\nW\nA S D'
+        this.add.text(textX + 810, textY, 'Movement (Red):\n↑\n← ↓ →', this.pauseButtonTextStyle)
+          .setAlign('center')
+      }
+      this.add.text(textX, textY, tutorialText, this.pauseButtonTextStyle)
+        .setAlign('center')
+    }
+
     // Create pause menu
     const pauseDepth = 10
     this.pauseBackground = this.add.image(1800 / 2, 1000 / 2, 'pauseBg')
@@ -80,6 +108,32 @@ export class Game extends Scene {
     this.pauseText = this.add.text(250, 150, 'Pause Menu', this.pauseTextStyle)
       .setDepth(pauseDepth)
       .setVisible(false)
+    this.restartButton = this.add.text(250, 250, 'Restart Level', this.pauseButtonTextStyle)
+      .setDepth(pauseDepth)
+      .setVisible(false)
+    this.restartButton.setInteractive(
+        new Phaser.Geom.Rectangle(0, 0, this.restartButton.width, this.restartButton.height),
+        Phaser.Geom.Rectangle.Contains
+      )
+    this.restartButton.on('pointerdown', () => {
+        this.scene.restart()
+      })
+    this.goBackButton = this.add.text(250, 350, 'Return to Main Menu', this.pauseButtonTextStyle)
+      .setDepth(pauseDepth)
+      .setVisible(false)
+    this.goBackButton.setInteractive(
+        new Phaser.Geom.Rectangle(0, 0, this.goBackButton.width, this.goBackButton.height),
+        Phaser.Geom.Rectangle.Contains
+      )
+    this.goBackButton.on('pointerdown', () => {
+        this.scene.switch('MainMenu')
+      })
+    this.pauseContainer = this.add.container().add([
+      this.pauseBackground,
+      this.pauseText,
+      this.restartButton,
+      this.goBackButton
+    ])
   }
 
   update(time: number, delta: number): void {
@@ -116,7 +170,6 @@ export class Game extends Scene {
         changeKeys(false)
         this.showPauseMenu(true)
       } else {
-        this.camera.setAlpha(1)
         changeKeys(true)
         this.showPauseMenu(false)
       }

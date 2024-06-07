@@ -6,13 +6,14 @@ export class MainMenu extends Scene {
   private title: GameObjects.Text
   private onePlayerImage: GameObjects.Image
   private twoPlayerImage: GameObjects.Image
+  private versionText: GameObjects.Text
   private createdTextOne: GameObjects.Text
   private createdTextTwo: GameObjects.Text
   private textStyle: GameObjects.TextStyle
+  private mainTexts: string[]
 
   constructor() {
     super('MainMenu')
-    console.log('Main Menu Scene')
 
     this.textStyle = {
       fontFamily: 'Arial Black',
@@ -22,6 +23,18 @@ export class MainMenu extends Scene {
       strokeThickness: 8,
       align: 'center'
     }
+
+    this.mainTexts = [
+      'This is a string.',
+      'Try the original!',
+      'Shoutouts to Lava World!',
+      'Made in 2024!',
+      "It's free!",
+      'qwertyuiopasdfghjklzxcvbnm',
+      'Click the logo!',
+      'This is random.',
+      'Press ESC to pause!'
+    ]
   }
 
   create() {
@@ -31,6 +44,22 @@ export class MainMenu extends Scene {
     this.background = this.add.tileSprite(0, 0, SCREEN_X, SCREEN_Y, 'titleBg')
     this.background.setOrigin(0, 0)
     this.logo = this.add.image(SCREEN_X / 2, 300, 'logo').setScale(0.5)
+    this.logo.setInteractive(
+      new Phaser.Geom.Rectangle(0, 0, this.logo.width, this.logo.height),
+      Phaser.Geom.Rectangle.Contains
+    )
+    this.logo.on('pointerdown', () => {
+      this.scene.switch('Credits')
+    })
+    // Find a random string to show
+    const maxNumber = this.mainTexts.length
+    const randomInt = Math.floor(Math.random() * maxNumber);
+    this.versionText = this.add.text(
+      0,
+      0,
+      'V0.5\n\n\n\n\n\n\n\n\n\n\n\n' + this.mainTexts[randomInt],
+      this.textStyle
+    ).setAlign('left')
     this.title = this.add.text(SCREEN_X / 2, SCREEN_Y / 2, 'Click here to play!', this.textStyle).setOrigin(0.5)
     this.title.setInteractive(
       new Phaser.Geom.Rectangle(0, 0, this.title.width, this.title.height),
