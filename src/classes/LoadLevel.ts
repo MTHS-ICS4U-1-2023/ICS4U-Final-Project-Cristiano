@@ -281,7 +281,7 @@ export default class LoadLevel {
         })
       }
     } catch (error) {
-      currentScene.scene.switch('MainMenu')
+      currentScene.scene.start('MainMenu')
     }
   }
 }

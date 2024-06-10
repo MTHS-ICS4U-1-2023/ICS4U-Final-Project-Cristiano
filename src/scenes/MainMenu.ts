@@ -7,6 +7,7 @@ export class MainMenu extends Scene {
   private onePlayerImage: GameObjects.Image
   private twoPlayerImage: GameObjects.Image
   private versionText: GameObjects.Text
+  private selectLevelText: GameObjects.Text
   private createdTextOne: GameObjects.Text
   private createdTextTwo: GameObjects.Text
   private textStyle: GameObjects.TextStyle
@@ -15,6 +16,7 @@ export class MainMenu extends Scene {
   constructor() {
     super('MainMenu')
 
+    // Menu text style
     this.textStyle = {
       fontFamily: 'Arial Black',
       fontSize: 60,
@@ -24,6 +26,7 @@ export class MainMenu extends Scene {
       align: 'center'
     }
 
+    // Random menu strings
     this.mainTexts = [
       'This is a string.',
       'Try the original!',
@@ -32,8 +35,15 @@ export class MainMenu extends Scene {
       "It's free!",
       'qwertyuiopasdfghjklzxcvbnm',
       'Click the logo!',
-      'This is random.',
-      'Press ESC to pause!'
+      'These messages are random.',
+      'Press ESC to pause!',
+      'Made in TypeScript!',
+      'Phaser 3!',
+      'I do not know if this text will appear on screen correctly',
+      'undefined',
+      'I hope this works',
+      'Tip: You cannot jump.',
+      'With added circles!'
     ]
   }
 
@@ -49,18 +59,18 @@ export class MainMenu extends Scene {
       Phaser.Geom.Rectangle.Contains
     )
     this.logo.on('pointerdown', () => {
-      this.scene.switch('Credits')
+      this.scene.start('Credits')
     })
     // Find a random string to show
     const maxNumber = this.mainTexts.length
     const randomInt = Math.floor(Math.random() * maxNumber);
     this.versionText = this.add.text(
+      5,
       0,
-      0,
-      'V0.5\n\n\n\n\n\n\n\n\n\n\n\n' + this.mainTexts[randomInt],
+      'V0.6\n\n\n\n\n\n\n\n\n\n\n\n' + this.mainTexts[randomInt],
       this.textStyle
     ).setAlign('left')
-    this.title = this.add.text(SCREEN_X / 2, SCREEN_Y / 2, 'Click here to play!', this.textStyle).setOrigin(0.5)
+    this.title = this.add.text(SCREEN_X / 2, SCREEN_Y / 2, 'Click here to play!', this.textStyle).setOrigin()
     this.title.setInteractive(
       new Phaser.Geom.Rectangle(0, 0, this.title.width, this.title.height),
       Phaser.Geom.Rectangle.Contains
@@ -69,7 +79,7 @@ export class MainMenu extends Scene {
       // Change menu section
       this.title.disableInteractive()
       this.title.setVisible(false)
-      // One player
+      // One player select
       this.onePlayerImage = this.add.image(SCREEN_X / 2 - 100, SCREEN_Y / 2 + 50, 'playerImg').setScale(0.3)
       this.onePlayerImage.setInteractive(
         new Phaser.Geom.Rectangle(0, 0, this.onePlayerImage.width, this.onePlayerImage.height),
@@ -82,7 +92,7 @@ export class MainMenu extends Scene {
           players: 1
         })
       })
-      // Two players
+      // Two player select
       this.twoPlayerImage = this.add.image(SCREEN_X / 2 + 100, SCREEN_Y / 2 + 50, 'playerTwoImg').setScale(0.3)
       this.twoPlayerImage.setInteractive(
         new Phaser.Geom.Rectangle(0, 0, this.twoPlayerImage.width, this.twoPlayerImage.height),
@@ -94,6 +104,17 @@ export class MainMenu extends Scene {
           level: 1,
           players: 2
         })
+      })
+      // Level select
+      this.selectLevelText = this.add.text(
+        SCREEN_X / 2, SCREEN_Y / 2 + 200, 'Level Select', this.textStyle
+      ).setOrigin()
+      this.selectLevelText.setInteractive(
+        new Phaser.Geom.Rectangle(0, 0, this.selectLevelText.width, this.selectLevelText.height),
+        Phaser.Geom.Rectangle.Contains
+      )
+      this.selectLevelText.on('pointerdown', () => {
+        this.scene.start('LevelSelect')
       })
     })
   }
