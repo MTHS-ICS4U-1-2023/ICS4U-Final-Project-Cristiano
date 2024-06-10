@@ -3,7 +3,8 @@ import { Scene, GameObjects } from 'phaser'
 export class Credits extends Scene {
   private background: GameObjects.TileSprite
   private logo: GameObjects.Image
-  private versionText: GameObjects.Text
+  private creditsText: GameObjects.Text
+  private returnText: GameObjects.Text
   private textStyle: GameObjects.TextStyle
 
   constructor() {
@@ -31,14 +32,22 @@ export class Credits extends Scene {
       Phaser.Geom.Rectangle.Contains
     )
     this.logo.on('pointerdown', () => {
-      this.scene.switch('MainMenu')
+      this.scene.start('MainMenu')
     })
-    this.versionText = this.add.text(
+    this.creditsText = this.add.text(
       SCREEN_X / 2,
       SCREEN_Y / 2,
       'Programming & Original Game: Cristiano Sellitto',
       this.textStyle
     ).setOrigin(0.5)
+    this.returnText = this.add.text(
+      0,
+      0,
+      '\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nClick the logo to return to the main menu.',
+      this.textStyle
+    )
+      .setAlign('left')
+      .setFontSize(30)
   }
 
   update(time: number, delta: number): void {

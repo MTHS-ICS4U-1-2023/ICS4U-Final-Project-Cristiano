@@ -3,7 +3,7 @@ import { Game as MainGame } from './scenes/Game'
 import { MainMenu } from './scenes/MainMenu'
 import { Credits } from './scenes/Credits'
 import { Preloader } from './scenes/Preloader'
-
+import { LevelSelect } from './scenes/LevelSelect'
 import { Game, Types } from "phaser"
 
 //  Find out more information about the Game Config at:
@@ -29,6 +29,7 @@ const config: Types.Core.GameConfig = {
         Preloader,
         MainMenu,
         Credits,
+        LevelSelect,
         MainGame
     ]
 };

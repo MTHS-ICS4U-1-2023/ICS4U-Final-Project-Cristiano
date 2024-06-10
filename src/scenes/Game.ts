@@ -14,6 +14,7 @@ export class Game extends Scene {
   private pauseText: Phaser.GameObjects.Text
   private restartButton: Phaser.GameObjects.Text
   private goBackButton: Phaser.GameObjects.Text
+  private gotoLvSelectButton: Phaser.GameObjects.Text
   public player: Player
   public playerTwo: Player | null
   public levelBanner: LevelBanner
@@ -69,7 +70,7 @@ export class Game extends Scene {
     this.background = this.add.tileSprite(0, 0, 1800, 1000, 'gameBg')
     this.background.setOrigin(0, 0)
 
-    // Create player
+    // Create player(s)
     this.player = this.physics.add.existing(new Player(this, 0, 0, 1))
 
     if (this.players == 2) {
@@ -102,14 +103,11 @@ export class Game extends Scene {
     this.pauseBackground = this.add.image(1800 / 2, 1000 / 2, 'pauseBg')
       .setOrigin(0.5)
       .setScale(0.75)
-      .setAlpha(0.5)
-      .setDepth(pauseDepth)
+      .setAlpha(0.8)
       .setVisible(false)
     this.pauseText = this.add.text(250, 150, 'Pause Menu', this.pauseTextStyle)
-      .setDepth(pauseDepth)
       .setVisible(false)
-    this.restartButton = this.add.text(250, 250, 'Restart Level', this.pauseButtonTextStyle)
-      .setDepth(pauseDepth)
+    this.restartButton = this.add.text(250, this.pauseText.y + 100, 'Restart Level', this.pauseButtonTextStyle)
       .setVisible(false)
     this.restartButton.setInteractive(
         new Phaser.Geom.Rectangle(0, 0, this.restartButton.width, this.restartButton.height),
@@ -118,22 +116,32 @@ export class Game extends Scene {
     this.restartButton.on('pointerdown', () => {
         this.scene.restart()
       })
-    this.goBackButton = this.add.text(250, 350, 'Return to Main Menu', this.pauseButtonTextStyle)
-      .setDepth(pauseDepth)
+  this.gotoLvSelectButton = this.add.text(250, this.restartButton.y + 100, 'Level Select', this.pauseButtonTextStyle)
+    .setVisible(false)
+  this.gotoLvSelectButton.setInteractive(
+      new Phaser.Geom.Rectangle(0, 0, this.gotoLvSelectButton.width, this.gotoLvSelectButton.height),
+      Phaser.Geom.Rectangle.Contains
+    )
+  this.gotoLvSelectButton.on('pointerdown', () => {
+      this.scene.start('LevelSelect')
+    })
+    this.goBackButton = this.add.text(250, this.gotoLvSelectButton.y + 100, 'Return to Main Menu', this.pauseButtonTextStyle)
       .setVisible(false)
     this.goBackButton.setInteractive(
         new Phaser.Geom.Rectangle(0, 0, this.goBackButton.width, this.goBackButton.height),
         Phaser.Geom.Rectangle.Contains
       )
     this.goBackButton.on('pointerdown', () => {
-        this.scene.switch('MainMenu')
+        this.scene.start('MainMenu')
       })
     this.pauseContainer = this.add.container().add([
       this.pauseBackground,
       this.pauseText,
       this.restartButton,
+      this.gotoLvSelectButton,
       this.goBackButton
     ])
+    this.pauseContainer.setDepth(pauseDepth)
   }
 
   update(time: number, delta: number): void {
