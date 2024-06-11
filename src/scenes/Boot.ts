@@ -1,6 +1,9 @@
 import { Scene } from 'phaser'
 
 export class Boot extends Scene {
+  /**
+   * Boots the game up
+   */
   constructor() {
     super('Boot')
   }

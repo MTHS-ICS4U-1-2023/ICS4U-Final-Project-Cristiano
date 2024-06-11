@@ -16,26 +16,91 @@ import GreenKeyDoor from './GreenKeyDoor'
 import GreenKey from './GreenKey'
 import { Game } from '../scenes/Game'
 
-/**
- * Loads a level from a JSON file
- */
 export default class LoadLevel {
+  /**
+   * The name of the loaded level
+   */
   public levelName: string
+
+  /**
+   * The container of the boxes
+   */
+
   private boxes: Phaser.GameObjects.Container
+  /**
+   * The collider that P1 has with regular boxes
+   */
   private boxCollider: Phaser.Physics.Arcade.Collider
+
+  /**
+   * The collider that P2 has with regular boxes
+   */
   private boxColliderP2: Phaser.Physics.Arcade.Collider
+
+  /**
+   * The container of the lava boxes
+   */
   private lavaBoxes: Phaser.GameObjects.Container
+
+  /**
+   * The container of the move boxes
+   */
   private moveBoxes: Phaser.GameObjects.Container
+
+  /**
+   * The container of the steel boxes
+   */
   private steelBoxes: Phaser.GameObjects.Container
+
+  /**
+   * The container of the goals
+   */
   private goals: Phaser.GameObjects.Container
+
+  /**
+   * The container of the power ups
+   */
   private powerUps: Phaser.GameObjects.Container
+
+  /**
+   * The container of the red key doors
+   */
   private redKeyDoors: Phaser.GameObjects.Container
+
+  /**
+   * The container of the red keys
+   */
   private redKeys: Phaser.GameObjects.Container
+
+  /**
+   * The container of the blue key doors
+   */
   private blueKeyDoors: Phaser.GameObjects.Container
+
+  /**
+   * The container of the blue keys
+   */
   private blueKeys: Phaser.GameObjects.Container
+
+  /**
+   * The container of the green key doors
+   */
   private greenKeyDoors: Phaser.GameObjects.Container
+
+  /**
+   * The container of the green keys
+   */
   private greenKeys: Phaser.GameObjects.Container
 
+  /**
+   * Loads a level from a JSON file
+   * 
+   * @param currentScene The current scene of the game
+   * @param level The level's number to load
+   * @param player Player 1's class
+   * @param playerTwo Player 2's class or null
+   * @param playerCount The number of players
+   */
   constructor(currentScene: Game, level: number, player: Player, playerTwo: Player | null, playerCount: number) {
     /**
      * CurrentLevel properties:
@@ -45,7 +110,7 @@ export default class LoadLevel {
      * Index 2+: Level objects
      */
     try {
-      let currentLevel = levels[level]
+      let currentLevel: string[] = levels[level]
       if (playerCount == 2) {
         currentLevel = levelsMulti[level]
       }
@@ -53,10 +118,10 @@ export default class LoadLevel {
       this.moveBoxes = currentScene.add.container()
       // Create moves boxes first because we need to give them collisions with other boxes
       for (let counterMove = 2; counterMove < currentLevel.length; counterMove++) {
-        const currentObject = currentLevel[counterMove]
+        const currentObject: any = currentLevel[counterMove]
         if (currentObject[0] == 'moveBox') {
-          const maxVelocity = 750
-          const moveBox = currentScene.physics.add.existing(new MoveBox(currentScene, currentObject[1], currentObject[2], player, playerTwo))
+          const maxVelocity: number = 750
+          const moveBox: MoveBox = currentScene.physics.add.existing(new MoveBox(currentScene, currentObject[1], currentObject[2], player, playerTwo))
           moveBox.setMaxVelocity(maxVelocity, maxVelocity)
           this.moveBoxes.add(moveBox)
         }
@@ -73,79 +138,79 @@ export default class LoadLevel {
       this.blueKeys = currentScene.add.container()
       this.greenKeyDoors = currentScene.add.container()
       this.greenKeys = currentScene.add.container()
-      for (let counter = 2; counter < currentLevel.length; counter++) {
+      for (let counter: number = 2; counter < currentLevel.length; counter++) {
         /*
           Current object values:
           0 = Object type
           1 = X position
           2 = Y position
         */
-        const currentObject = currentLevel[counter]
+        const currentObject: any = currentLevel[counter]
         // Create other boxes
         switch (currentObject[0]) {
           case 'box':
-            const colliderBox = currentScene.physics.add.existing(new Box(currentScene, currentObject[1], currentObject[2], this.moveBoxes))
+            const colliderBox: Box = currentScene.physics.add.existing(new Box(currentScene, currentObject[1], currentObject[2], this.moveBoxes))
             colliderBox.setImmovable(true)
             this.boxes.add(colliderBox)
             break
           case 'goal':
-            const colliderGoal = currentScene.physics.add.existing(new Goal(currentScene, currentObject[1], currentObject[2]))
+            const colliderGoal: Goal = currentScene.physics.add.existing(new Goal(currentScene, currentObject[1], currentObject[2]))
             colliderGoal.setImmovable(true)
             this.goals.add(colliderGoal)
             break
           case 'lavaBox':
-            const colliderLavaBox = currentScene.physics.add.existing(new LavaBox(currentScene, currentObject[1], currentObject[2], this.moveBoxes))
+            const colliderLavaBox: LavaBox = currentScene.physics.add.existing(new LavaBox(currentScene, currentObject[1], currentObject[2], this.moveBoxes))
             colliderLavaBox.setImmovable(true)
             this.lavaBoxes.add(colliderLavaBox)
             break
           case 'steelBox':
-            const colliderSteelBox = currentScene.physics.add.existing(new SteelBox(currentScene, currentObject[1], currentObject[2], this.moveBoxes))
+            const colliderSteelBox: SteelBox = currentScene.physics.add.existing(new SteelBox(currentScene, currentObject[1], currentObject[2], this.moveBoxes))
             colliderSteelBox.setImmovable(true)
             this.steelBoxes.add(colliderSteelBox)
             break
           case 'powerUp':
-            const colliderPower = currentScene.physics.add.existing(new PowerUp(currentScene, currentObject[1], currentObject[2]))
+            const colliderPower: PowerUp = currentScene.physics.add.existing(new PowerUp(currentScene, currentObject[1], currentObject[2]))
             colliderPower.setImmovable(true)
             this.powerUps.add(colliderPower)
             break
           case 'redKeyDoor':
-            const colliderRedKeyDoor = currentScene.physics.add.existing(new RedKeyDoor(currentScene, currentObject[1], currentObject[2], this.moveBoxes))
+            const colliderRedKeyDoor: RedKeyDoor = currentScene.physics.add.existing(new RedKeyDoor(currentScene, currentObject[1], currentObject[2], this.moveBoxes))
             colliderRedKeyDoor.setImmovable(true)
             this.redKeyDoors.add(colliderRedKeyDoor)
             break
           case 'redKey':
-            const colliderRedKey = currentScene.physics.add.existing(new RedKey(currentScene, currentObject[1], currentObject[2]))
+            const colliderRedKey: RedKey = currentScene.physics.add.existing(new RedKey(currentScene, currentObject[1], currentObject[2]))
             colliderRedKey.setImmovable(true)
             this.redKeys.add(colliderRedKey)
             break
           case 'blueKeyDoor':
-            const colliderBlueKeyDoor = currentScene.physics.add.existing(new BlueKeyDoor(currentScene, currentObject[1], currentObject[2], this.moveBoxes))
+            const colliderBlueKeyDoor: BlueKeyDoor = currentScene.physics.add.existing(new BlueKeyDoor(currentScene, currentObject[1], currentObject[2], this.moveBoxes))
             colliderBlueKeyDoor.setImmovable(true)
             this.blueKeyDoors.add(colliderBlueKeyDoor)
             break
           case 'blueKey':
-            const colliderBlueKey = currentScene.physics.add.existing(new BlueKey(currentScene, currentObject[1], currentObject[2]))
+            const colliderBlueKey: BlueKey = currentScene.physics.add.existing(new BlueKey(currentScene, currentObject[1], currentObject[2]))
             colliderBlueKey.setImmovable(true)
             this.blueKeys.add(colliderBlueKey)
             break
           case 'greenKeyDoor':
-            const colliderGreenKeyDoor = currentScene.physics.add.existing(new GreenKeyDoor(currentScene, currentObject[1], currentObject[2], this.moveBoxes))
+            const colliderGreenKeyDoor: GreenKeyDoor = currentScene.physics.add.existing(new GreenKeyDoor(currentScene, currentObject[1], currentObject[2], this.moveBoxes))
             colliderGreenKeyDoor.setImmovable(true)
             this.greenKeyDoors.add(colliderGreenKeyDoor)
             break
           case 'greenKey':
-            const colliderGreenKey = currentScene.physics.add.existing(new GreenKey(currentScene, currentObject[1], currentObject[2]))
+            const colliderGreenKey: GreenKey = currentScene.physics.add.existing(new GreenKey(currentScene, currentObject[1], currentObject[2]))
             colliderGreenKey.setImmovable(true)
             this.greenKeys.add(colliderGreenKey)
             break
         }
       }
       // Create screen boundary
-      const boundKey: String = currentLevel[1]
-      const screenBounds = bounds[boundKey]
+      const boundKey: string = currentLevel[1]
+      const screenBounds: string[] = bounds[boundKey]
       for (let counter = 0; counter < screenBounds.length; counter++) {
-        const currentObject = screenBounds[counter]
-        const colliderSteelBox = currentScene.physics.add.existing(new SteelBox(currentScene, currentObject[1], currentObject[2], this.moveBoxes))
+        const currentObject: any = screenBounds[counter]
+        const colliderSteelBox: SteelBox = currentScene.physics.add.existing(new SteelBox(currentScene, currentObject[1], currentObject[2], this.moveBoxes))
         colliderSteelBox.setImmovable(true)
         this.steelBoxes.add(colliderSteelBox)
       }

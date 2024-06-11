@@ -1,6 +1,9 @@
 import { Scene } from 'phaser'
 
 export class Preloader extends Scene {
+  /**
+   * Preloads files for the game
+   */
   constructor() {
     super('Preloader')
   }

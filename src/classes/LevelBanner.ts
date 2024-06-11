@@ -1,9 +1,15 @@
-/**
- * Creates a banner that shows the text of the level
- */
 export default class LevelBanner extends Phaser.Physics.Arcade.Image {
+  /**
+   * The name of the level text
+   */
   public levelText: Phaser.GameObjects.Text
 
+  /**
+   * Creates a banner that shows the name of the level
+   *
+   * @param scene The scene to put the object into
+   * @param levelText The name of the level
+   */
   constructor(scene: Phaser.Scene, levelText: string) {
     // Create banner
     const bannerX = 285

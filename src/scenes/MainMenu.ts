@@ -1,18 +1,64 @@
 import { Scene, GameObjects } from 'phaser'
 
 export class MainMenu extends Scene {
+  /**
+   * Menu background tilesprite
+   */
   private background: GameObjects.TileSprite
+
+  /**
+   * Game logo image
+   */
   private logo: GameObjects.Image
+
+  /**
+   * Title screen text
+   */
   private title: GameObjects.Text
+
+  /**
+   * Player One image button
+   */
   private onePlayerImage: GameObjects.Image
+
+  /**
+   * Player Two image button
+   */
   private twoPlayerImage: GameObjects.Image
+
+  /**
+   * Text that indicates game version and the random string
+   */
   private versionText: GameObjects.Text
+
+  /**
+   * Select level text button
+   */
   private selectLevelText: GameObjects.Text
+
+  /**
+   * Player One text
+   */
   private createdTextOne: GameObjects.Text
+
+  /**
+   * Player Two text
+   */
   private createdTextTwo: GameObjects.Text
+
+  /**
+   * Menu text style
+   */
   private textStyle: GameObjects.TextStyle
+
+  /**
+   * Array that contains the random strings
+   */
   private mainTexts: string[]
 
+  /**
+   * The main menu of the game
+   */
   constructor() {
     super('MainMenu')
 
@@ -47,6 +93,9 @@ export class MainMenu extends Scene {
     ]
   }
 
+  /**
+   * Creates the menu
+   */
   create() {
     // Create title images
     const SCREEN_X = 1800
@@ -119,7 +168,10 @@ export class MainMenu extends Scene {
     })
   }
 
-  update(time: number, delta: number): void {
+  /**
+   * Runs every milisecond, moves the menu background
+   */
+  update(): void {
     this.background.tilePositionX += 1 
   }
 }

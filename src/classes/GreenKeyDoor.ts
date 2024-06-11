@@ -1,7 +1,12 @@
-/**
- * Creates a green key door that can be unlocked with a green key
- */
 export default class GreenKeyDoor extends Phaser.Physics.Arcade.Sprite {
+  /**
+   * Creates a green key door that can be unlocked with a green key
+   *
+   * @param scene The scene to put the object into
+   * @param gridX The X grid position
+   * @param gridY The Y grid position
+   * @param moveBoxes The move boxes to collide with
+   */
   constructor(scene: Phaser.Scene, gridX: number, gridY: number, moveBoxes: Phaser.GameObjects.Container) {
     // Create key door
     const posX = 100 + gridX * 200

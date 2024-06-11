@@ -1,14 +1,42 @@
-/**
- * Creates a player
- */
 export default class Player extends Phaser.Physics.Arcade.Sprite {
+  /**
+   * The player's power up hat
+   */
   public powerUpHat: Phaser.GameObjects.Image
+
+  /**
+   * The number of red keys the player is holding
+   */
   public redKeysHeld: number
+
+  /**
+   * The number of blue keys the player is holding
+   */
   public blueKeysHeld: number
+
+  /**
+   * The number of green keys the player is holding
+   */
   public greenKeysHeld: number
+
+  /**
+   * Bool that says if the player was deleted
+   */
   public isDeleted: boolean
+
+  /**
+   * The scene the player is in
+   */
   private currentScene: Phaser.Scene
 
+  /**
+   * Creates a player
+   *
+   * @param scene The scene to put the object into
+   * @param playerX The player's inital grid X position
+   * @param playerY The player's inital grid Y position
+   * @param playerNumber The player's number
+   */
   constructor(scene: Phaser.Scene, playerX: number, playerY: number, playerNumber: number) {
     // Player X and Y values
     playerX = 100 + playerX * 200
@@ -47,7 +75,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
    * @param moveKey the key that says what direction the player will move in
    */
   public move(moveKey: string) {
-    const PLAYER_SPEED = 5 * 100
+    const PLAYER_SPEED: number = 5 * 100
 
     try {
       switch (moveKey) {

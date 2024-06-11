@@ -1,7 +1,12 @@
-/**
- * Creates a box that causes the player to lose the level
- */
 export default class LavaBox extends Phaser.Physics.Arcade.Sprite {
+  /**
+   * Creates a box that causes the player to lose the level
+   *
+   * @param scene The scene to put the object into
+   * @param gridX The X grid position
+   * @param gridY The Y grid position
+   * @param moveBoxes The move boxes to collide with
+   */
   constructor(scene: Phaser.Scene, gridX: number, gridY: number, moveBoxes: Phaser.GameObjects.Container) {
     // Create box
     const posX = 100 + gridX * 200
