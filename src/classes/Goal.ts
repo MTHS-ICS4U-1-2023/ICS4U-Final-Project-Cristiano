@@ -1,9 +1,16 @@
-/**
- * Creates a goal that begins the next level when touched
- */
 export default class Goal extends Phaser.Physics.Arcade.Sprite {
-  playersPassed: number
+  /**
+   * The number of players that passed the goal
+   */
+  public playersPassed: number
 
+  /**
+   * Creates a goal that begins the next level when touched
+   *
+   * @param scene The scene to put the object into
+   * @param gridX The X grid position
+   * @param gridY The Y grid position
+   */
   constructor(scene: Phaser.Scene, gridX: number, gridY: number) {
     // Create goal
     const posX = 100 + gridX * 200

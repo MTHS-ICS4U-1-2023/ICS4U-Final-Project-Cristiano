@@ -1,12 +1,34 @@
 import { Scene, GameObjects } from 'phaser'
 
 export class Credits extends Scene {
+  /**
+   * The credits background
+   */
   private background: GameObjects.TileSprite
+
+  /**
+   * The game logo
+   */
   private logo: GameObjects.Image
+
+  /**
+   * The credits text
+   */
   private creditsText: GameObjects.Text
+
+  /**
+   * The return to main menu text button
+   */
   private returnText: GameObjects.Text
+
+  /**
+   * The credits text style
+   */
   private textStyle: GameObjects.TextStyle
 
+  /**
+   * Loads the credits
+   */
   constructor() {
     super('Credits')
 
@@ -20,6 +42,9 @@ export class Credits extends Scene {
     }
   }
 
+  /**
+   * Creates the credits
+   */
   create() {
     // Create title images
     const SCREEN_X = 1800
@@ -50,7 +75,10 @@ export class Credits extends Scene {
       .setFontSize(30)
   }
 
-  update(time: number, delta: number): void {
+  /**
+   * Runs every milisecond, moves the menu background
+   */
+  update(): void {
     this.background.tilePositionX += 1 
   }
 }

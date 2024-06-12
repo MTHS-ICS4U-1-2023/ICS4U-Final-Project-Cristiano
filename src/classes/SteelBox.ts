@@ -1,7 +1,12 @@
-/**
- * Creates a steel box, a box that cannot be moved even when having a powerup
- */
 export default class SteelBox extends Phaser.Physics.Arcade.Sprite {
+  /**
+   * Creates a steel box which is a box that cannot be moved even when having a powerup
+   *
+   * @param scene The scene to put the object into
+   * @param gridX The X grid position
+   * @param gridY The Y grid position
+   * @param moveBoxes The move boxes to collide with
+   */
   constructor(scene: Phaser.Scene, gridX: number, gridY: number, moveBoxes: Phaser.GameObjects.Container) {
     // Create box
     const posX = 100 + gridX * 200

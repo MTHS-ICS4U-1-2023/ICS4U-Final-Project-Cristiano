@@ -1,17 +1,32 @@
 import levels from '../levels/main.json'
 import levelsMulti from '../levels/multiplayer.json'
 
-/**
- * Loads the levels to select from a json file
- */
 export default class LoadLevelSelect {
+  /**
+   * The current scene of the menu
+   */
   private currentScene: Phaser.Scene
+
+  /**
+   * The level select text style
+   */
   private textStyle: Phaser.GameObjects.TextStyle
+
+  /**
+   * The container that contains the level select buttons
+   */
   private levelButtons: Phaser.GameObjects.Container
 
+  /**
+   * Loads the levels to select from a json file
+   *
+   * @param scene The current scene of the menu
+   * @param playerCount The number of players
+   * @param textStyle The text style to use
+   */
   constructor(scene: Phaser.Scene, playerCount: number, textStyle: Phaser.GameObjects.TextStyle) {
     // Load levels
-    let levelJson = levels
+    let levelJson: any = levels
     if (playerCount == 2) {
       levelJson = levelsMulti
     }
@@ -28,7 +43,7 @@ export default class LoadLevelSelect {
     // Add level buttons
     this.levelButtons = scene.add.container()
     for (let counter: number = 1; counter <= numberOfLevels; counter ++) {
-      const selectedLevel = levelJson[counter]
+      const selectedLevel: any = levelJson[counter]
       const maxLines: number = 8
       const yMultiplier = 100
       const yOffset = 10
@@ -63,7 +78,7 @@ export default class LoadLevelSelect {
   public regenerate(playerCount: number) {
     this.levelButtons.destroy()
     // Load levels
-    let levelJson = levels
+    let levelJson: any = levels
     if (playerCount == 2) {
       levelJson = levelsMulti
     }
@@ -80,7 +95,7 @@ export default class LoadLevelSelect {
     // Add level buttons
     this.levelButtons = this.currentScene.add.container()
     for (let counter: number = 1; counter <= numberOfLevels; counter ++) {
-      const selectedLevel = levelJson[counter]
+      const selectedLevel: any = levelJson[counter]
       const maxLines: number = 8
       const yMultiplier = 100
       const yOffset = 10

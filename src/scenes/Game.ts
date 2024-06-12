@@ -4,24 +4,94 @@ import Player from '../classes/Player'
 import LevelBanner from '../classes/LevelBanner'
 
 export class Game extends Scene {
-  private camera: Phaser.Cameras.Scene2D.Camera
-  private background: Phaser.GameObjects.TileSprite
+  /**
+   * The level loader
+   */
   private levelLoader: LoadLevel
+
+  /**
+   * Pause menu background image
+   */
   private pauseBackground: Phaser.GameObjects.Image
+
+  /**
+   * Pause menu text style
+   */
   private pauseTextStyle: Phaser.GameObjects.TextStyle
+
+  /**
+   * Container that contains pause menu elements
+   */
   private pauseContainer: Phaser.GameObjects.Container
+
+  /**
+   * Pause menu button text style
+   */
   private pauseButtonTextStyle: Phaser.GameObjects.TextStyle
+
+  /**
+   * Pause menu text
+   */
   private pauseText: Phaser.GameObjects.Text
+
+  /**
+   * Restart button for the pause menu
+   */
   private restartButton: Phaser.GameObjects.Text
+
+  /**
+   * Go back button for the pause menu
+   */
   private goBackButton: Phaser.GameObjects.Text
+
+  /**
+   * Go to the level select button for the pause menu
+   */
   private gotoLvSelectButton: Phaser.GameObjects.Text
+
+  /**
+   * The game camera
+   */
+  public camera: Phaser.Cameras.Scene2D.Camera
+
+  /**
+   * Game background
+   */
+  public background: Phaser.GameObjects.TileSprite
+
+  /**
+   * The current player one
+   */
   public player: Player
+
+  /**
+   * The current player two
+   */
   public playerTwo: Player | null
+
+  /**
+   * The level banner
+   */
   public levelBanner: LevelBanner
+
+  /**
+   * The box collision for the level
+   */
   public boxCollision: Phaser.Physics.Arcade.StaticBody
+
+  /**
+   * The current level number
+   */
   public currentLevel: number
+
+  /**
+   * The current number of players
+   */
   public players: number
 
+  /**
+   * Loads the game
+   */
   constructor() {
     super('Game')
     // Create initial variables
@@ -58,17 +128,25 @@ export class Game extends Scene {
     }
   }
 
+  /**
+   * Initializes game data
+   *
+   * @param data The data imported
+   */
   init(data: any) {
     this.currentLevel = data.level
     this.players = data.players
   }
 
+  /**
+   * Creates the game scene
+   */
   create() {
     this.camera = this.cameras.main
 
     // Create background
     this.background = this.add.tileSprite(0, 0, 1800, 1000, 'gameBg')
-    this.background.setOrigin(0, 0)
+    this.background.setOrigin(0)
 
     // Create player(s)
     this.player = this.physics.add.existing(new Player(this, 0, 0, 1))
@@ -81,15 +159,16 @@ export class Game extends Scene {
     this.levelLoader = new LoadLevel(this, this.currentLevel, this.player, this.playerTwo, this.players)
 
     // Create level banner
-    this.levelBanner = new LevelBanner(this, this.levelLoader.levelName)
+    this.levelBanner = new LevelBanner(this, this.levelLoader.levelName, this.camera.zoom)
 
     // Create tutorial text
     if (this.currentLevel == 1) {
-      let textX = 525
-      let textY = 200
-      let tutorialText: string = 'Movement:\nW\nA S D'
+      let textX = 365
+      let textY = 150
+      let tutorialText: string = 'Movement:\nW\nA S D\nPress ESC to pause.'
       if (this.players == 2) {
         textX = 210
+        textY = 200
         tutorialText = 'Movement (Blue):\nW\nA S D'
         this.add.text(textX + 810, textY, 'Movement (Red):\n↑\n← ↓ →', this.pauseButtonTextStyle)
           .setAlign('center')
@@ -141,10 +220,17 @@ export class Game extends Scene {
       this.gotoLvSelectButton,
       this.goBackButton
     ])
+    this.pauseContainer.setScale(this.pauseContainer.scale / this.camera.zoom)
+    if (this.camera.zoom == 0.5) {
+      this.pauseContainer.setPosition(-900, -500)
+    }
     this.pauseContainer.setDepth(pauseDepth)
   }
 
-  update(time: number, delta: number): void {
+  /**
+   * Runs every milisecond, handles keybinds (player movement, pause menu)
+   */
+  update(): void {
     // Key binds
     const keyUpArrow = this.input.keyboard.addKey('UP')
     const keyDownArrow = this.input.keyboard.addKey('DOWN')

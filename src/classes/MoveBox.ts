@@ -1,9 +1,15 @@
 import Player from "./Player"
 
-/**
- * Creates a box that can be moved by the player
- */
 export default class MoveBox extends Phaser.Physics.Arcade.Sprite {
+  /**
+   * Creates a box that can be moved by the player
+   *
+   * @param scene The scene to put the object into
+   * @param gridX The X grid position
+   * @param gridY The Y grid position
+   * @param player The first player
+   * @param playerTwo The second player or null
+   */
   constructor(scene: Phaser.Scene, gridX: number, gridY: number, player: Player, playerTwo: Player | null) {
     // Create box
     const posX = 100 + gridX * 200
