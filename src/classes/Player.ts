@@ -69,6 +69,19 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   /**
+   * Sets the player's position on the game grid
+   *
+   * @param gridX The player's grid X position
+   * @param gridY The player's grid Y position
+   */
+  public setGridPosition(gridX: number, gridY: number) {
+    // Player X and Y values
+    gridX = 100 + gridX * 200
+    gridY = 100 + gridY * 200
+    this.setPosition(gridX, gridY)
+  }
+
+  /**
    * Moves the player in a direction.
    * Stops moving the player is an invalid move key is set.
    *

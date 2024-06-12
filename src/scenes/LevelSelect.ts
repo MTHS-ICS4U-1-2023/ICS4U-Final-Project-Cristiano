@@ -33,6 +33,16 @@ export class LevelSelect extends Scene {
   private playerTwoImage: GameObjects.Image
 
   /**
+   * Player One text
+   */
+  private createdTextOne: GameObjects.Text
+
+  /**
+   * Player Two text
+   */
+  private createdTextTwo: GameObjects.Text
+
+  /**
    * The level select loader
    */
   private levelSelectLoader: LoadLevelSelect
@@ -83,6 +93,9 @@ export class LevelSelect extends Scene {
     this.playerOneImage.on('pointerdown', () => {
       this.levelSelectLoader.regenerate(1)
     })
+    this.createdTextOne = this.add.text(
+      this.playerOneImage.x - 37, this.playerOneImage.y - 65, '1P', this.textStyle
+    ).setFontSize(50)
     this.playerTwoImage = this.add.image(
       this.playerOneImage.x, this.playerOneImage.y + 150, 'playerTwoImg'
     ).setScale(playerScale)
@@ -93,6 +106,9 @@ export class LevelSelect extends Scene {
     this.playerTwoImage.on('pointerdown', () => {
       this.levelSelectLoader.regenerate(2)
     })
+    this.createdTextTwo = this.add.text(
+      this.playerTwoImage.x - 37, this.playerTwoImage.y - 65, '2P', this.textStyle
+    ).setFontSize(50)
 
     // Load levels to select
     this.levelSelectLoader = new LoadLevelSelect(this, 1, this.textStyle)

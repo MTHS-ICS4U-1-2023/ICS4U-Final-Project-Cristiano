@@ -205,10 +205,22 @@ export default class LoadLevel {
             break
         }
       }
-      // Create screen boundary
+      // Create screen boundary and camera zoom
       const boundKey: string = currentLevel[1]
-      const screenBounds: string[] = bounds[boundKey]
-      for (let counter = 0; counter < screenBounds.length; counter++) {
+      const screenBounds: any = bounds[boundKey]
+      const cameraZoom: number = screenBounds[0]
+      currentScene.camera.setZoom(cameraZoom)
+      if (cameraZoom == 0.5) {
+        // If the camera is zoomed out to 0.5, use the special background and change player position
+        currentScene.background.setTexture('gameBgSpecial')
+        currentScene.background.setScale(currentScene.background.scale / cameraZoom)
+        currentScene.background.setOrigin(cameraZoom / 2)
+        player.setGridPosition(-4, -2)
+        if (playerCount == 2) {
+          playerTwo.setGridPosition(12, -2)
+        }
+      }
+      for (let counter = 1; counter < screenBounds.length; counter++) {
         const currentObject: any = screenBounds[counter]
         const colliderSteelBox: SteelBox = currentScene.physics.add.existing(new SteelBox(currentScene, currentObject[1], currentObject[2], this.moveBoxes))
         colliderSteelBox.setImmovable(true)

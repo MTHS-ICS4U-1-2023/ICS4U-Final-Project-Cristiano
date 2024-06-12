@@ -5,16 +5,6 @@ import LevelBanner from '../classes/LevelBanner'
 
 export class Game extends Scene {
   /**
-   * The game camera
-   */
-  private camera: Phaser.Cameras.Scene2D.Camera
-
-  /**
-   * Game background
-   */
-  private background: Phaser.GameObjects.TileSprite
-
-  /**
    * The level loader
    */
   private levelLoader: LoadLevel
@@ -58,6 +48,16 @@ export class Game extends Scene {
    * Go to the level select button for the pause menu
    */
   private gotoLvSelectButton: Phaser.GameObjects.Text
+
+  /**
+   * The game camera
+   */
+  public camera: Phaser.Cameras.Scene2D.Camera
+
+  /**
+   * Game background
+   */
+  public background: Phaser.GameObjects.TileSprite
 
   /**
    * The current player one
@@ -146,7 +146,7 @@ export class Game extends Scene {
 
     // Create background
     this.background = this.add.tileSprite(0, 0, 1800, 1000, 'gameBg')
-    this.background.setOrigin(0, 0)
+    this.background.setOrigin(0)
 
     // Create player(s)
     this.player = this.physics.add.existing(new Player(this, 0, 0, 1))
@@ -159,15 +159,16 @@ export class Game extends Scene {
     this.levelLoader = new LoadLevel(this, this.currentLevel, this.player, this.playerTwo, this.players)
 
     // Create level banner
-    this.levelBanner = new LevelBanner(this, this.levelLoader.levelName)
+    this.levelBanner = new LevelBanner(this, this.levelLoader.levelName, this.camera.zoom)
 
     // Create tutorial text
     if (this.currentLevel == 1) {
-      let textX = 525
-      let textY = 200
-      let tutorialText: string = 'Movement:\nW\nA S D'
+      let textX = 365
+      let textY = 150
+      let tutorialText: string = 'Movement:\nW\nA S D\nPress ESC to pause.'
       if (this.players == 2) {
         textX = 210
+        textY = 200
         tutorialText = 'Movement (Blue):\nW\nA S D'
         this.add.text(textX + 810, textY, 'Movement (Red):\n↑\n← ↓ →', this.pauseButtonTextStyle)
           .setAlign('center')
@@ -219,6 +220,10 @@ export class Game extends Scene {
       this.gotoLvSelectButton,
       this.goBackButton
     ])
+    this.pauseContainer.setScale(this.pauseContainer.scale / this.camera.zoom)
+    if (this.camera.zoom == 0.5) {
+      this.pauseContainer.setPosition(-900, -500)
+    }
     this.pauseContainer.setDepth(pauseDepth)
   }
 
