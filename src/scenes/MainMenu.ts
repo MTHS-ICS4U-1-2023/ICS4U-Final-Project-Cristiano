@@ -76,7 +76,7 @@ export class MainMenu extends Scene {
     this.mainTexts = [
       'This is a string.',
       'Try the original!',
-      'Shoutouts to Lava World!',
+      'Shoutouts to Lava World on Scratch!',
       'Made in 2024!',
       "It's free!",
       'qwertyuiopasdfghjklzxcvbnm',
@@ -89,10 +89,22 @@ export class MainMenu extends Scene {
       'undefined',
       'I hope this works',
       'Tip: You cannot jump.',
-      'With added circles!',
+      'With added circlular eyes!',
       'One point oh!',
       'Pretty square!',
-      'I got a box here...'
+      'I got a box here...',
+      '☺',
+      'this.destory()',
+      'Hit the goal post at the end to win.',
+      'No more square eyes!',
+      'O_O',
+      'null',
+      'Box World 2 releases soon...',
+      'Object oriented!',
+      "The brown boxes won't hurt you anymore.",
+      'Hey!',
+      'Remade!',
+      'Happy 2nd Birthday!'
     ]
   }
 
@@ -119,7 +131,7 @@ export class MainMenu extends Scene {
     this.versionText = this.add.text(
       5,
       0,
-      'v1.0\n\n\n\n\n\n\n\n\n\n\n\n' + this.mainTexts[randomInt],
+      'v1.01\n\n\n\n\n\n\n\n\n\n\n\n' + this.mainTexts[randomInt],
       this.textStyle
     ).setAlign('left')
     this.title = this.add.text(SCREEN_X / 2, SCREEN_Y / 2, 'Click here to play!', this.textStyle).setOrigin()
