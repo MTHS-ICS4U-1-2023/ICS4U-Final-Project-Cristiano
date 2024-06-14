@@ -1,4 +1,5 @@
 import { Scene, GameObjects } from 'phaser'
+import SettingsMenu from '../classes/SettingsMenu'
 
 export class MainMenu extends Scene {
   /**
@@ -25,6 +26,16 @@ export class MainMenu extends Scene {
    * Player Two image button
    */
   private twoPlayerImage: GameObjects.Image
+
+  /**
+   * Game settings image button
+   */
+  private settingsButton: GameObjects.Image
+
+  /**
+   * Settings menu
+   */
+  private settingsMenu: SettingsMenu
 
   /**
    * Text that indicates game version and the random string
@@ -116,6 +127,7 @@ export class MainMenu extends Scene {
     const SCREEN_X = 1800
     const SCREEN_Y = 1000
     this.background = this.add.tileSprite(0, 0, SCREEN_X, SCREEN_Y, 'titleBg')
+    // Logo button
     this.background.setOrigin(0, 0)
     this.logo = this.add.image(SCREEN_X / 2, 270, 'logo').setScale(0.5)
     this.logo.setInteractive(
@@ -131,9 +143,10 @@ export class MainMenu extends Scene {
     this.versionText = this.add.text(
       5,
       0,
-      'v1.01\n\n\n\n\n\n\n\n\n\n\n\n' + this.mainTexts[randomInt],
+      'v1.1\n\n\n\n\n\n\n\n\n\n\n\n' + this.mainTexts[randomInt],
       this.textStyle
     ).setAlign('left')
+    // Play buttons
     this.title = this.add.text(SCREEN_X / 2, SCREEN_Y / 2, 'Click here to play!', this.textStyle).setOrigin()
     this.title.setInteractive(
       new Phaser.Geom.Rectangle(0, 0, this.title.width, this.title.height),
@@ -153,7 +166,8 @@ export class MainMenu extends Scene {
       this.onePlayerImage.on('pointerdown', () => {
         this.scene.start('Game', {
           level: 1,
-          players: 1
+          players: 1,
+          settings: this.settingsMenu
         })
       })
       // Two player select
@@ -166,7 +180,8 @@ export class MainMenu extends Scene {
       this.twoPlayerImage.on('pointerdown', () => {
         this.scene.start('Game', {
           level: 1,
-          players: 2
+          players: 2,
+          settings: this.settingsMenu
         })
       })
       // Level select
@@ -178,8 +193,20 @@ export class MainMenu extends Scene {
         Phaser.Geom.Rectangle.Contains
       )
       this.selectLevelText.on('pointerdown', () => {
-        this.scene.start('LevelSelect')
+        this.scene.start('LevelSelect', {
+          settings: this.settingsMenu
+        })
       })
+    })
+    // Settings menu
+    this.settingsMenu = new SettingsMenu(this, SCREEN_X, SCREEN_Y).setDepth(10)
+    this.settingsButton = this.add.image(SCREEN_X - 50, 50, 'settings').setScale(0.5)
+    this.settingsButton.setInteractive(
+      new Phaser.Geom.Rectangle(0, 0, this.settingsButton.width, this.settingsButton.height),
+      Phaser.Geom.Rectangle.Contains
+    )
+    this.settingsButton.on('pointerdown', () => {
+      this.settingsMenu.toggle()
     })
   }
 

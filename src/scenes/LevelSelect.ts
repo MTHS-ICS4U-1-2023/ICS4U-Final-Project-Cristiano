@@ -1,5 +1,6 @@
 import { Scene, GameObjects } from 'phaser'
 import LoadLevelSelect from '../classes/LoadLevelSelect'
+import SettingsMenu from '../classes/SettingsMenu'
 
 export class LevelSelect extends Scene {
   /**
@@ -48,6 +49,12 @@ export class LevelSelect extends Scene {
   private levelSelectLoader: LoadLevelSelect
 
   /**
+   * The game settings
+   */
+  private settings: SettingsMenu
+
+
+  /**
    * Loads the level select menu
    */
   constructor() {
@@ -61,6 +68,11 @@ export class LevelSelect extends Scene {
       strokeThickness: 8,
       align: 'center'
     }
+  }
+
+  init(data: any) {
+    this.settings = data.settings
+    this.settings.showTime = false
   }
 
   /**
@@ -91,7 +103,7 @@ export class LevelSelect extends Scene {
       Phaser.Geom.Rectangle.Contains
     )
     this.playerOneImage.on('pointerdown', () => {
-      this.levelSelectLoader.regenerate(1)
+      this.levelSelectLoader.regenerate(1, this.settings)
     })
     this.createdTextOne = this.add.text(
       this.playerOneImage.x - 37, this.playerOneImage.y - 65, '1P', this.textStyle
@@ -104,14 +116,14 @@ export class LevelSelect extends Scene {
       Phaser.Geom.Rectangle.Contains
     )
     this.playerTwoImage.on('pointerdown', () => {
-      this.levelSelectLoader.regenerate(2)
+      this.levelSelectLoader.regenerate(2, this.settings)
     })
     this.createdTextTwo = this.add.text(
       this.playerTwoImage.x - 37, this.playerTwoImage.y - 65, '2P', this.textStyle
     ).setFontSize(50)
 
     // Load levels to select
-    this.levelSelectLoader = new LoadLevelSelect(this, 1, this.textStyle)
+    this.levelSelectLoader = new LoadLevelSelect(this, 1, this.textStyle, this.settings)
   }
 
   /**
