@@ -55,6 +55,7 @@ export class Preloader extends Scene {
     this.load.image('levelBanner', 'images/levelBanner.png')
     this.load.image('playerImg', 'images/player.png')
     this.load.image('playerTwoImg', 'images/playerTwo.png')
+    this.load.image('settings', 'images/settingsIcon.png')
   }
 
   create() {

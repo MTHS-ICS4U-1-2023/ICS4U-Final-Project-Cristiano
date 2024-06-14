@@ -1,5 +1,6 @@
 import levels from '../levels/main.json'
 import levelsMulti from '../levels/multiplayer.json'
+import SettingsMenu from './SettingsMenu'
 
 export default class LoadLevelSelect {
   /**
@@ -23,8 +24,14 @@ export default class LoadLevelSelect {
    * @param scene The current scene of the menu
    * @param playerCount The number of players
    * @param textStyle The text style to use
+   * @param gameSettings The game settings chosen by the player
    */
-  constructor(scene: Phaser.Scene, playerCount: number, textStyle: Phaser.GameObjects.TextStyle) {
+  constructor(
+    scene: Phaser.Scene,
+    playerCount: number,
+    textStyle: Phaser.GameObjects.TextStyle,
+    gameSettings: SettingsMenu
+  ) {
     // Load levels
     let levelJson: any = levels
     if (playerCount == 2) {
@@ -61,7 +68,8 @@ export default class LoadLevelSelect {
       levelButton.on('pointerdown', () => {
         scene.scene.start('Game', {
           level: counter,
-          players: playerCount
+          players: playerCount,
+          settings: gameSettings
         })
       })
       this.levelButtons.add(levelButton)
@@ -74,8 +82,9 @@ export default class LoadLevelSelect {
    * Removes all of the level buttons and regenerates them
    * 
    * @param playerCount The player count levels to regen
+   * @param gameSettings The game settings chosen by the player
    */
-  public regenerate(playerCount: number) {
+  public regenerate(playerCount: number, gameSettings: SettingsMenu) {
     this.levelButtons.destroy()
     // Load levels
     let levelJson: any = levels
@@ -113,7 +122,8 @@ export default class LoadLevelSelect {
       levelButton.on('pointerdown', () => {
         this.currentScene.scene.start('Game', {
           level: counter,
-          players: playerCount
+          players: playerCount,
+          settings: gameSettings
         })
       })
       this.levelButtons.add(levelButton)

@@ -15,6 +15,7 @@ import BlueKey from './BlueKey'
 import GreenKeyDoor from './GreenKeyDoor'
 import GreenKey from './GreenKey'
 import { Game } from '../scenes/Game'
+import SettingsMenu from './SettingsMenu'
 
 export default class LoadLevel {
   /**
@@ -100,8 +101,16 @@ export default class LoadLevel {
    * @param player Player 1's class
    * @param playerTwo Player 2's class or null
    * @param playerCount The number of players
+   * @param gameSettings The game settings chosen by the player
    */
-  constructor(currentScene: Game, level: number, player: Player, playerTwo: Player | null, playerCount: number) {
+  constructor(
+    currentScene: Game,
+    level: number,
+    player: Player,
+    playerTwo: Player | null,
+    playerCount: number,
+    gameSettings: SettingsMenu
+  ) {
     /**
      * CurrentLevel properties:
      * 
@@ -237,7 +246,8 @@ export default class LoadLevel {
         if (goalCollide.playersPassed == 2 || playerCount == 1) {
           currentScene.scene.restart({
             level: level + 1,
-            players: currentScene.players
+            players: currentScene.players,
+            settings: gameSettings
           })
         }
       })
@@ -302,7 +312,8 @@ export default class LoadLevel {
           if (goalCollide.playersPassed == 2) {
             currentScene.scene.restart({
               level: level + 1,
-              players: currentScene.players
+              players: currentScene.players,
+              settings: gameSettings
             })
           }
         })

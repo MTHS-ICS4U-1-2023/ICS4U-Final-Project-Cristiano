@@ -2,6 +2,8 @@ import { Scene } from 'phaser'
 import LoadLevel from '../classes/LoadLevel'
 import Player from '../classes/Player'
 import LevelBanner from '../classes/LevelBanner'
+import SettingsMenu from '../classes/SettingsMenu'
+import Timer from '../classes/Timer'
 
 export class Game extends Scene {
   /**
@@ -50,6 +52,16 @@ export class Game extends Scene {
   private gotoLvSelectButton: Phaser.GameObjects.Text
 
   /**
+   * Player settings
+   */
+  private settings: SettingsMenu
+
+  /**
+   * Game timer
+   */
+  private timer: Timer | null
+
+  /**
    * The game camera
    */
   public camera: Phaser.Cameras.Scene2D.Camera
@@ -96,6 +108,7 @@ export class Game extends Scene {
     super('Game')
     // Create initial variables
     this.playerTwo = null
+    this.timer = null
     this.pauseTextStyle = {
       fontFamily: 'Arial Black',
       fontSize: 60,
@@ -136,6 +149,7 @@ export class Game extends Scene {
   init(data: any) {
     this.currentLevel = data.level
     this.players = data.players
+    this.settings = data.settings
   }
 
   /**
@@ -156,7 +170,9 @@ export class Game extends Scene {
     }
 
     // Load current level
-    this.levelLoader = new LoadLevel(this, this.currentLevel, this.player, this.playerTwo, this.players)
+    this.levelLoader = new LoadLevel(
+      this, this.currentLevel, this.player, this.playerTwo, this.players, this.settings
+    )
 
     // Create level banner
     this.levelBanner = new LevelBanner(this, this.levelLoader.levelName, this.camera.zoom)
@@ -193,17 +209,19 @@ export class Game extends Scene {
         Phaser.Geom.Rectangle.Contains
       )
     this.restartButton.on('pointerdown', () => {
-        this.scene.restart()
-      })
-  this.gotoLvSelectButton = this.add.text(250, this.restartButton.y + 100, 'Level Select', this.pauseButtonTextStyle)
-    .setVisible(false)
-  this.gotoLvSelectButton.setInteractive(
-      new Phaser.Geom.Rectangle(0, 0, this.gotoLvSelectButton.width, this.gotoLvSelectButton.height),
-      Phaser.Geom.Rectangle.Contains
-    )
-  this.gotoLvSelectButton.on('pointerdown', () => {
-      this.scene.start('LevelSelect')
+      this.scene.restart()
     })
+    this.gotoLvSelectButton = this.add.text(250, this.restartButton.y + 100, 'Level Select', this.pauseButtonTextStyle)
+      .setVisible(false)
+    this.gotoLvSelectButton.setInteractive(
+        new Phaser.Geom.Rectangle(0, 0, this.gotoLvSelectButton.width, this.gotoLvSelectButton.height),
+        Phaser.Geom.Rectangle.Contains
+      )
+    this.gotoLvSelectButton.on('pointerdown', () => {
+        this.scene.start('LevelSelect', {
+          settings: this.settings
+        })
+      })
     this.goBackButton = this.add.text(250, this.gotoLvSelectButton.y + 100, 'Return to Main Menu', this.pauseButtonTextStyle)
       .setVisible(false)
     this.goBackButton.setInteractive(
@@ -225,6 +243,11 @@ export class Game extends Scene {
       this.pauseContainer.setPosition(-900, -500)
     }
     this.pauseContainer.setDepth(pauseDepth)
+    
+    // Create timer
+    if (this.settings.showTime == true) {
+      this.timer = new Timer(this, this.pauseButtonTextStyle).setDepth(pauseDepth - 1)
+    }
   }
 
   /**
@@ -329,6 +352,11 @@ export class Game extends Scene {
           this.playerTwo.move('')
         }
       }
+    }
+
+    // Timer update
+    if (this.timer?.active == true) {
+      this.timer.count()
     }
   }
 }
