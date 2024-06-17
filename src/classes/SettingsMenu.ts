@@ -10,6 +10,11 @@ export default class SettingsMenu extends Phaser.GameObjects.Container {
   public showTime: boolean
 
   /**
+   * The skip level pop-up when complete setting
+   */
+  public skipLevelComplete: boolean
+
+  /**
    *  Pause menu text style
    */
   public pauseTextStyle: Phaser.GameObjects.TextStyle
@@ -48,12 +53,14 @@ export default class SettingsMenu extends Phaser.GameObjects.Container {
     }
     // Create default settings
     this.showTime = false
+    this.skipLevelComplete = false
     // Create settings menu
     const settingsBackground: Phaser.GameObjects.Image = scene.add.image(screenX / 2, screenY / 2, 'pauseBg')
       .setOrigin(0.5)
       .setScale(0.75)
       .setAlpha(0.8)
     const menuText: Phaser.GameObjects.Text = scene.add.text(250, 150, 'Settings', this.pauseTextStyle)
+    // Create timer button
     const timeToggleButton = scene.add.text(
       250, menuText.y + 100, `Show Time: ${this.showTime}`, this.pauseButtonTextStyle
     )
@@ -69,10 +76,28 @@ export default class SettingsMenu extends Phaser.GameObjects.Container {
       }
       timeToggleButton.setText(`Show Time: ${this.showTime}`)
     })
+    // Create timer button
+    const levelPopupToggleButton = scene.add.text(
+      250, timeToggleButton.y + 100, `Skip Level Complete/Lost Text: ${this.skipLevelComplete}`, this.pauseButtonTextStyle
+    )
+    levelPopupToggleButton.setInteractive(
+        new Phaser.Geom.Rectangle(0, 0, levelPopupToggleButton.width, levelPopupToggleButton.height),
+        Phaser.Geom.Rectangle.Contains
+      )
+      levelPopupToggleButton.on('pointerdown', () => {
+      if (this.skipLevelComplete == true) {
+        this.skipLevelComplete = false
+      } else {
+        this.skipLevelComplete = true
+      }
+      levelPopupToggleButton.setText(`Skip Level Complete/Lost Text: ${this.skipLevelComplete}`)
+    })
+    // Add all elements to menu
     this.add([
       settingsBackground,
       menuText,
-      timeToggleButton
+      timeToggleButton,
+      levelPopupToggleButton
     ])
     this.setVisible(false)
     scene.add.existing(this)

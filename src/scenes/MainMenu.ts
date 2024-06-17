@@ -143,7 +143,7 @@ export class MainMenu extends Scene {
     this.versionText = this.add.text(
       5,
       0,
-      'v1.1\n\n\n\n\n\n\n\n\n\n\n\n' + this.mainTexts[randomInt],
+      'v1.2\n\n\n\n\n\n\n\n\n\n\n\n' + this.mainTexts[randomInt],
       this.textStyle
     ).setAlign('left')
     // Play buttons
@@ -214,6 +214,14 @@ export class MainMenu extends Scene {
    * Runs every milisecond, moves the menu background
    */
   update(): void {
-    this.background.tilePositionX += 1 
+    // Settings menu keybind
+    const keyPause = this.input.keyboard.addKey('ESC')
+    const keyEscDown = Phaser.Input.Keyboard.JustDown(keyPause)
+
+    if (keyEscDown) {
+      this.settingsMenu.toggle()
+    }
+
+    this.background.tilePositionX += 1
   }
 }

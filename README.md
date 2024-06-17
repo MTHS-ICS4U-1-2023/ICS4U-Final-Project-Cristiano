@@ -2,7 +2,9 @@
 
 Phaser 3 box game in TypeScript
 
-Site link: <https://cristianosellitto.github.io/ICS4U-Final-Project-Cristiano/>
+Site link: <https://mths-ics4u-1-2023.github.io/ICS4U-Final-Project-Cristiano/>
+
+Development link: <https://cristianosellitto.github.io/ICS4U-Final-Project-Cristiano/>
 
 [![Super-Linter](https://github.com/CristianoSellitto/ICS4U-Final-Project-Cristiano/actions/workflows/main.yml/badge.svg)](https://github.com/marketplace/actions/super-linter)
 
