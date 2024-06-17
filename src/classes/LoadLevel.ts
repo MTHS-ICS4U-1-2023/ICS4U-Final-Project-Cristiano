@@ -101,15 +101,13 @@ export default class LoadLevel {
    * @param player Player 1's class
    * @param playerTwo Player 2's class or null
    * @param playerCount The number of players
-   * @param gameSettings The game settings chosen by the player
    */
   constructor(
     currentScene: Game,
     level: number,
     player: Player,
     playerTwo: Player | null,
-    playerCount: number,
-    gameSettings: SettingsMenu
+    playerCount: number
   ) {
     /**
      * CurrentLevel properties:
@@ -244,16 +242,14 @@ export default class LoadLevel {
         goalCollide.playersPassed++
         playerCollide.destroy()
         if (goalCollide.playersPassed == 2 || playerCount == 1) {
-          currentScene.scene.restart({
-            level: level + 1,
-            players: currentScene.players,
-            settings: gameSettings
-          })
+          currentScene.winLevel()
         }
       })
       // Lava box
-      currentScene.physics.add.collider(player, this.lavaBoxes.getAll(), function() {
-        currentScene.scene.restart()
+      currentScene.physics.add.collider(player, this.lavaBoxes.getAll(), function(playerCollide) {
+        playerCollide.destroy()
+        playerTwo?.destroy()
+        currentScene.loseLevel(1)
       })
       // Steel box
       currentScene.physics.add.collider(player, this.steelBoxes.getAll())
@@ -310,16 +306,14 @@ export default class LoadLevel {
           goalCollide.playersPassed++
           playerCollide.destroy()
           if (goalCollide.playersPassed == 2) {
-            currentScene.scene.restart({
-              level: level + 1,
-              players: currentScene.players,
-              settings: gameSettings
-            })
+            currentScene.winLevel()
           }
         })
         // Lava box
-        currentScene.physics.add.collider(playerTwo, this.lavaBoxes.getAll(), function() {
-          currentScene.scene.restart()
+        currentScene.physics.add.collider(playerTwo, this.lavaBoxes.getAll(), function(playerCollide) {
+          playerCollide.destroy()
+          player.destroy()
+          currentScene.loseLevel(2)
         })
         // Steel box
         currentScene.physics.add.collider(playerTwo, this.steelBoxes.getAll())
